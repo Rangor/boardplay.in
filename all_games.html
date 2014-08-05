@@ -1,0 +1,15 @@
+<html>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function(){
+      $.get( "http://localhost:8080/games", function( data ) {
+        for(var i in data){
+          $("body").append("<p>"+data[i].name+"</p>");
+        }
+        });
+      });
+</script>
+<body>
+</body>
+</html>
