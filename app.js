@@ -85,17 +85,19 @@ function restrict(req, res, next) {
   }
 }
 
-app.get('/', function(req, res){
-  res.locals.message = '<p class="msg error">Hello</p>';
-  var games;
-  Game.find(function (err, data) {
-  if (err) return console.error(err);
-    res.locals.message = data.toString();
-    res.locals.games = data;
+app.get('/', restrict,function(req, res){
+  if (req.session.user) {
+      Game.find(function (err, data) {
+      if (err) return console.error(err);
+        res.locals.games = data;
+        res.locals.user = req.session.user;
+        res.render('main');
+      });
+  }else{
+    res.locals.games = null;
+    res.locals.user = null;
     res.render('main');
-  })
-
-
+  }
 });
 
 app.get('/restricted', restrict, function(req, res){

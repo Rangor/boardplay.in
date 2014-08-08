@@ -3,9 +3,14 @@
 
 <h1>I'm Playing</h1>
 
-<a href="/login">Login<a/>
+<% if (user) { %>
+    <h2>Logged in as: <%= user.name %></h2>
+    <a href="/logout">Logout<a/>
+<% } %>
+
+
+<% if (games) { %>
 <h3>List of games in database</h3>
-<% if (games.length) { %>
   <ul>
     <% games.forEach(function(name){ %>
       <li foo='<%= name + "'" %>'><%= name.name %></li>
