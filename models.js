@@ -8,25 +8,14 @@ var playSchema = mongoose.Schema({
     userName: String,
     userId: String,
     gameName: String,
-    gameId,
+    gameId : String,
     date: {type: Date, default: Date.now}
 })
 
-new Schema({
-  title:  String,
-  author: String,
-  body:   String,
-  comments: [{ body: String, date: Date }],
-  date: { type: Date, default: Date.now },
-  hidden: Boolean,
-  meta: {
-    votes: Number,
-    favs:  Number
-  }
-});
-
 var Game = mongoose.model('Game', gameSchema);
+var Play = mongoose.model('Play', playSchema);
 
 module.exports = {
-  Game: Game
+  Game: Game,
+  Play: Play
 }

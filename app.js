@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var Game = require("./models").Game;
+var Play = require("./models").Play;
 mongoose.connect('mongodb://localhost/test');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -105,6 +106,15 @@ app.get('/games', restrict,function(req, res){
       });
 });
 
+app.get('/plays', restrict,function(req, res){
+      Play.find(function (err, data) {
+      if (err) return console.error(err);
+        res.locals.plays = data;
+        res.locals.user = req.session.user;
+        res.render('plays');
+      });
+});
+
 app.get('/newgame', restrict,function(req, res){
         res.locals.user = req.session.user;
         res.render('newgame');
@@ -117,6 +127,21 @@ app.post('/newgame', restrict,function(req, res){
         game.save(function () {
           res.locals.user = req.session.user;
           res.redirect('games');
+        });
+});
+
+app.get('/logplay', restrict,function(req, res){
+        res.locals.user = req.session.user;
+        res.render('logplay');
+});
+
+app.post('/logplay', restrict,function(req, res){
+        console.log("New play was logged, name:" + req.param("name"));
+        var play = new Play();
+        play.gameName = req.param("name");
+        play.save(function () {
+          res.locals.user = req.session.user;
+          res.redirect('plays');
         });
 });
 
