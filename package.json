@@ -4,6 +4,21 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "express": "3.x"
-  }
+    "express": "3.x",
+    "body-parser": "^1.6.2",
+    "express-session": "^1.7.4",
+    "mongoose": "^3.8.14",
+    "crypto": "0.0.3",
+    "ejs": "^1.0.0"
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "heroku"
+  ],
+  "author": "Martin",
+  "license": "ISC"
 }
