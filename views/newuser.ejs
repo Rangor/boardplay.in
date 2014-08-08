@@ -1,0 +1,11 @@
+<% var title = 'Im Playing' %>
+<% include head %>
+<% include auth_menu %>
+<br>
+<form name="input" action="/newuser" method="post">
+User name: <input type="text" required="true" name="name"><br>
+User password: <input type="password" required="true" name="password"><br>
+<input type="submit" value="Submit">
+</form>
+
+<% include foot %>

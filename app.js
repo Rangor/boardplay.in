@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var Game = require("./models").Game;
 var Play = require("./models").Play;
+var User = require("./models").User;
 
 
 var http = require ('http');             // For serving a basic web page.
@@ -18,7 +19,7 @@ var mongoose = require ("mongoose"); // The reason for this demo.
 var uristring =
 process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||
-'mongodb://localhost/HelloMongoose';
+'mongodb://localhost/test';
 
 // The http server will listen to an appropriate port, or default to
 // port 5000.
@@ -33,8 +34,6 @@ mongoose.connect(uristring, function (err, res) {
   console.log ('Succeeded connected to: ' + uristring);
   }
 });
-// mongoose.connect('mongodb://localhost/test');
-
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -69,39 +68,31 @@ app.use(function(req, res, next){
   next();
 });
 
-// dummy database
-
-var users = {
-  // tj: { name: 'tj' },
-  martin: { name: 'martin' }
-};
-
-// when you create a user, generate a salt
-// and hash the password ('foobar' is the pass here)
-
-hash('foobar', function(err, salt, hash){
-  if (err) throw err;
-  // store the salt & hash in the "db"
-  users.martin.salt = salt;
-  users.martin.hash = hash;
-});
-
-
 // Authenticate using our plain-object database of doom!
 
 function authenticate(name, pass, fn) {
   if (!module.parent) console.log('authenticating %s:%s', name, pass);
-  var user = users[name];
-  // query the db for the given username
-  if (!user) return fn(new Error('cannot find user'));
-  // apply the same algorithm to the POSTed password, applying
-  // the hash against the pass / salt, if there is a match we
-  // found the user
-  hash(pass, user.salt, function(err, hash){
-    if (err) return fn(err);
-    if (hash == user.hash) return fn(null, user);
-    fn(new Error('invalid password'));
+
+  User.find(function (err, data) {
+  if (err) return console.error(err);
+    console.log(data);
   });
+
+  console.log("Looking for user:" + name);
+  var query = User.findOne({ 'name': name });
+  query.select('name password salt');
+  query.exec(function (err, user) {
+      if (err) return handleError(err);
+
+      hash(pass, user.salt,function(err,hash){
+        if (err) throw err;
+        if(user.password === hash){
+          return fn(null, user);
+        }else{
+          fn(new Error('invalid password'));
+        }
+        });
+    });
 }
 
 function restrict(req, res, next) {
@@ -172,6 +163,27 @@ app.post('/logplay', restrict,function(req, res){
         });
 });
 
+app.get('/newuser', function(req, res){
+        res.locals.user = req.session.user;
+        res.render('newuser');
+});
+
+app.post('/newuser', function(req, res){
+        var user = new User();
+        user.name = req.param("name");
+
+        hash(req.param("password"), function(err, salt, hash){
+        if (err) throw err;
+          user.salt = salt;
+          user.password = hash;
+
+          user.save(function () {
+            res.redirect('/');
+          });
+
+        });
+});
+
 app.get('/game/:id', restrict,function(req, res){
 
       var selectedId = req.param("id");
@@ -180,7 +192,6 @@ app.get('/game/:id', restrict,function(req, res){
       query.select('name');
       query.exec(function (err, game) {
         if (err) return handleError(err);
-          console.log(game.name);
           res.locals.game = game;
           res.locals.user = req.session.user;
           res.render('game');
@@ -193,7 +204,6 @@ app.get('/delete/:id', restrict,function(req, res){
       query.select('name');
       query.remove(function (err, game) {
         if (err) return handleError(err);
-          console.log("Deleted game with id " + selectedId);
           res.redirect('/games');
       })
 });

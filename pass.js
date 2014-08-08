@@ -31,6 +31,7 @@ var iterations = 12000;
 
 exports.hash = function (pwd, salt, fn) {
   if (3 == arguments.length) {
+    console.log("3 args - Salt used:" + salt);
     crypto.pbkdf2(pwd, salt, iterations, len, function(err, hash){
       fn(err, hash.toString('base64'));
     });
@@ -39,6 +40,7 @@ exports.hash = function (pwd, salt, fn) {
     crypto.randomBytes(len, function(err, salt){
       if (err) return fn(err);
       salt = salt.toString('base64');
+      console.log("2 args - Salt used:" + salt);
       crypto.pbkdf2(pwd, salt, iterations, len, function(err, hash){
         if (err) return fn(err);
         fn(null, salt, hash.toString('base64'));
