@@ -105,6 +105,21 @@ app.get('/games', restrict,function(req, res){
       });
 });
 
+app.get('/newgame', restrict,function(req, res){
+        res.locals.user = req.session.user;
+        res.render('newgame');
+});
+
+app.post('/newgame', restrict,function(req, res){
+        console.log("New game added, name:" + req.param("name"));
+        var game = new Game();
+        game.name = req.param("name");
+        game.save(function () {
+          res.locals.user = req.session.user;
+          res.redirect('games');
+        });
+});
+
 app.get('/game/:id', restrict,function(req, res){
 
       var selectedId = req.param("id");

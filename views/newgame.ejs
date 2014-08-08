@@ -1,0 +1,10 @@
+<% var title = 'Im Playing' %>
+<% include head %>
+<% include auth_menu %>
+
+<form name="input" action="/newgame" method="post">
+Game name: <input type="text" name="name"><br>
+<input type="submit" value="Submit">
+</form>
+
+<% include foot %>
