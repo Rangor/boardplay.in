@@ -1,0 +1,10 @@
+<% var title = 'Im Playing' %>
+<% include head %>
+<% include auth_menu %>
+<h2><%= game.name %></h2>
+<h3>BGG Link</h3>
+<h3>Number of players:</h3>
+<h3>Number of registered plays</h3>
+
+<a href="/delete/<%= game._id %>">Delete</a>
+<% include foot %>

@@ -77,6 +77,8 @@ function authenticate(name, pass, fn) {
 }
 
 function restrict(req, res, next) {
+  req.session.user = "Martin";
+
   if (req.session.user) {
     next();
   } else {
@@ -86,18 +88,47 @@ function restrict(req, res, next) {
 }
 
 app.get('/', restrict,function(req, res){
-  if (req.session.user) {
       Game.find(function (err, data) {
       if (err) return console.error(err);
         res.locals.games = data;
         res.locals.user = req.session.user;
         res.render('main');
       });
-  }else{
-    res.locals.games = null;
-    res.locals.user = null;
-    res.render('main');
-  }
+});
+
+app.get('/games', restrict,function(req, res){
+      Game.find(function (err, data) {
+      if (err) return console.error(err);
+        res.locals.games = data;
+        res.locals.user = req.session.user;
+        res.render('games');
+      });
+});
+
+app.get('/game/:id', restrict,function(req, res){
+
+      var selectedId = req.param("id");
+
+      var query = Game.findOne({ '_id': selectedId });
+      query.select('name');
+      query.exec(function (err, game) {
+        if (err) return handleError(err);
+          console.log(game.name);
+          res.locals.game = game;
+          res.locals.user = req.session.user;
+          res.render('game');
+      })
+});
+
+app.get('/delete/:id', restrict,function(req, res){
+      var selectedId = req.param("id");
+      var query = Game.findOne({ '_id': selectedId });
+      query.select('name');
+      query.remove(function (err, game) {
+        if (err) return handleError(err);
+          console.log("Deleted game with id " + selectedId);
+          res.redirect('/games');
+      })
 });
 
 app.get('/restricted', restrict, function(req, res){

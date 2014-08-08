@@ -3,10 +3,10 @@
 <% include auth_menu %>
 
 <% if (games) { %>
-<h3>Latest games in database</h3>
+<h3>List of games in database</h3>
   <ul>
-    <% games.forEach(function(name){ %>
-      <li foo='<%= name + "'" %>'><%= name.name %></li>
+    <% games.forEach(function(game){ %>
+      <a href="/game/<%= game._id %>"><li><%= game.name %></a></li>
     <% }) %>
   </ul>
 <% } %>
