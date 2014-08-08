@@ -46,7 +46,8 @@ app.use(function(req, res, next){
 // dummy database
 
 var users = {
-  tj: { name: 'tj' }
+  // tj: { name: 'tj' },
+  martin: { name: 'martin' }
 };
 
 // when you create a user, generate a salt
@@ -55,8 +56,8 @@ var users = {
 hash('foobar', function(err, salt, hash){
   if (err) throw err;
   // store the salt & hash in the "db"
-  users.tj.salt = salt;
-  users.tj.hash = hash;
+  users.martin.salt = salt;
+  users.martin.hash = hash;
 });
 
 
@@ -78,7 +79,7 @@ function authenticate(name, pass, fn) {
 }
 
 function restrict(req, res, next) {
-  req.session.user = "Martin";
+  // req.session.user = "Martin";
 
   if (req.session.user) {
     next();
