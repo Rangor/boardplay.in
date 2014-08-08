@@ -1,0 +1,16 @@
+<% var title = 'Authentication Example' %>
+<% include head %>
+
+<h1>I'm Playing</h1>
+
+<a href="/login">Login<a/>
+<h3>List of games in database</h3>
+<% if (games.length) { %>
+  <ul>
+    <% games.forEach(function(name){ %>
+      <li foo='<%= name + "'" %>'><%= name.name %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<% include foot %>
