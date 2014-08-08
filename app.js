@@ -250,6 +250,8 @@ app.post('/login', function(req, res){
 
 /* istanbul ignore next */
 if (!module.parent) {
-  app.listen(3000);
-  console.log('Express started on port 3000');
+  var port = Number(process.env.PORT || 5000);
+  app.listen(port, function() {
+  console.log("Listening on " + port);
+});
 }
