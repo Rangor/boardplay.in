@@ -4,12 +4,13 @@ var gameSchema = mongoose.Schema({
     name: String
 })
 
-var playSchema = mongoose.Schema({
-    userName: String,
-    userId: String,
-    gameName: String,
-    gameId : String,
-    date: {type: Date, default: Date.now}
+var sessionSchema = mongoose.Schema({
+    userName: {type:String, required: true},
+    userId: {type:String, required: true},
+    gameName: {type:String, required: true},
+    gameId : {type:String, required: true},
+    date: {type: Date, default: Date.now},
+    duration: Number
 })
 
 var userSchema = mongoose.Schema({
@@ -19,11 +20,11 @@ var userSchema = mongoose.Schema({
 })
 
 var Game = mongoose.model('Game', gameSchema);
-var Play = mongoose.model('Play', playSchema);
+var Session = mongoose.model('Session', sessionSchema);
 var User = mongoose.model('User', userSchema);
 
 module.exports = {
   Game: Game,
-  Play: Play,
+  Session: Session,
   User: User
 }

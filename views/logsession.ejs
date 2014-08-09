@@ -1,0 +1,16 @@
+<% var title = 'Im Playing' %>
+<% include head %>
+<% include auth_menu %>
+<h3>Log a new gaming session</h3>
+<form name="input" action="/logsession" method="post">
+Game name:<br>
+<select name="games">
+<% games.forEach(function(game){ %>
+  <option value="<%= game._id %>"><%= game.name %></option>
+<% }) %>
+</select>
+
+<input type="submit" value="Submit">
+</form>
+
+<% include foot %>

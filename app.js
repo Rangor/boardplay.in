@@ -7,7 +7,7 @@ var hash = require('./pass').hash;
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var Game = require("./models").Game;
-var Play = require("./models").Play;
+var Session = require("./models").Session;
 var User = require("./models").User;
 
 
@@ -124,12 +124,20 @@ app.get('/games', restrict,function(req, res){
       });
 });
 
-app.get('/plays', restrict,function(req, res){
-      Play.find(function (err, data) {
+function getAllGames(fn){
+  Game.find(function (err, data) {
+  if (err) return console.error(err);
+    console.log("Got all the games " + data);
+    return fn(data);
+  });
+}
+
+app.get('/sessions', restrict,function(req, res){
+      Session.find(function (err, data) {
       if (err) return console.error(err);
-        res.locals.plays = data;
+        res.locals.sessions = data;
         res.locals.user = req.session.user;
-        res.render('plays');
+        res.render('sessions');
       });
 });
 
@@ -148,18 +156,22 @@ app.post('/newgame', restrict,function(req, res){
         });
 });
 
-app.get('/logplay', restrict,function(req, res){
+app.get('/logsession', restrict,function(req, res){
         res.locals.user = req.session.user;
-        res.render('logplay');
+        getAllGames(function(data){
+          res.locals.games = data;
+          console.log("/logsession res.local.games:" + res.locals.games);
+          res.render('logsession');
+        });
 });
 
-app.post('/logplay', restrict,function(req, res){
+app.post('/logsession', restrict,function(req, res){
         console.log("New play was logged, name:" + req.param("name"));
-        var play = new Play();
-        play.gameName = req.param("name");
-        play.save(function () {
+        var session = new Session();
+        session.gameName = req.param("name");
+        session.save(function () {
           res.locals.user = req.session.user;
-          res.redirect('plays');
+          res.redirect('sessions');
         });
 });
 

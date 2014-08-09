@@ -1,0 +1,14 @@
+<% var title = 'Im Playing' %>
+<% include head %>
+<% include auth_menu %>
+<br>
+<% if (sessions) { %>
+<h3>List of sessions in database</h3>
+  <ul>
+    <% sessions.forEach(function(session){ %>
+      <li><%= session.gameName %> - <%= sessions.date %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<% include foot %>
