@@ -166,9 +166,20 @@ app.get('/logsession', restrict,function(req, res){
 });
 
 app.post('/logsession', restrict,function(req, res){
-        console.log("New play was logged, name:" + req.param("name"));
+        console.log("New play was logged, user name:" + req.session.user._id + " " + req.session.user.name);
+        console.log("game info:" + req.body.gamespicker);
+        var game = req.body.gamespicker.split(",");
+        console.log(game[0]);
+        console.log(game[1]);
+        console.log("summary text:" + req.param("summary"));
+        console.log("date:" + req.param("date"));
         var session = new Session();
-        session.gameName = req.param("name");
+        session.gameName = game[1];
+        session.gameId = game[0];
+        session.userName = req.session.user.name;
+        session.userId = req.session.user._id;
+        session.date = req.param("date");
+        session.summary = req.param("summary");
         session.save(function () {
           res.locals.user = req.session.user;
           res.redirect('sessions');

@@ -10,7 +10,8 @@ var sessionSchema = mongoose.Schema({
     gameName: {type:String, required: true},
     gameId : {type:String, required: true},
     date: {type: Date, default: Date.now},
-    duration: Number
+    duration: Number,
+    summary: String
 })
 
 var userSchema = mongoose.Schema({
