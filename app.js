@@ -73,12 +73,6 @@ app.use(function(req, res, next){
 function authenticate(name, pass, fn) {
   if (!module.parent) console.log('authenticating %s:%s', name, pass);
 
-  User.find(function (err, data) {
-  if (err) return console.error(err);
-    console.log(data);
-  });
-
-  console.log("Looking for user:" + name);
   var query = User.findOne({ 'name': name });
   query.select('name password salt');
   query.exec(function (err, user) {
@@ -106,13 +100,25 @@ function restrict(req, res, next) {
   }
 }
 
-app.get('/', restrict,function(req, res){
-      Game.find(function (err, data) {
-      if (err) return console.error(err);
-        res.locals.games = data;
-        res.locals.user = req.session.user;
-        res.render('main');
-      });
+// app.get('/', restrict,function(req, res){
+//       Game.find(function (err, data) {
+//       if (err) return console.error(err);
+//         res.locals.games = data;
+//         res.locals.user = req.session.user;
+//         res.render('main');
+//       });
+// });
+
+app.get('/', restrict, function(req, res){
+  getAllGamesAndSessions(function (games, sessions) {
+    // console.log("/main sessions:" + sessions);
+    res.locals.sessions = sessions;
+    res.locals.user = req.session.user;
+    res.locals.games = games;
+    res.render('main');
+  })
+
+
 });
 
 app.get('/games', restrict,function(req, res){
@@ -127,8 +133,20 @@ app.get('/games', restrict,function(req, res){
 function getAllGames(fn){
   Game.find(function (err, data) {
   if (err) return console.error(err);
-    console.log("Got all the games " + data);
+    // console.log("Got all the games " + data);
     return fn(data);
+  });
+}
+
+function getAllGamesAndSessions(fn){
+  Game.find(function (err, games) {
+  if (err) return console.error(err);
+    // console.log("Found games: " + games);
+    Session.find(function (err, sessions) {
+    if (err) return console.error(err);
+      // console.log("Found sessions: " + sessions);
+      return fn(games, sessions);
+    });
   });
 }
 
@@ -147,7 +165,7 @@ app.get('/newgame', restrict,function(req, res){
 });
 
 app.post('/newgame', restrict,function(req, res){
-        console.log("New game added, name:" + req.param("name"));
+        // console.log("New game added, name:" + req.param("name"));
         var game = new Game();
         game.name = req.param("name");
         game.save(function () {
@@ -160,19 +178,12 @@ app.get('/logsession', restrict,function(req, res){
         res.locals.user = req.session.user;
         getAllGames(function(data){
           res.locals.games = data;
-          console.log("/logsession res.local.games:" + res.locals.games);
           res.render('logsession');
         });
 });
 
 app.post('/logsession', restrict,function(req, res){
-        console.log("New play was logged, user name:" + req.session.user._id + " " + req.session.user.name);
-        console.log("game info:" + req.body.gamespicker);
         var game = req.body.gamespicker.split(",");
-        console.log(game[0]);
-        console.log(game[1]);
-        console.log("summary text:" + req.param("summary"));
-        console.log("date:" + req.param("date"));
         var session = new Session();
         session.gameName = game[1];
         session.gameId = game[0];
@@ -235,15 +246,7 @@ app.get('/restricted', restrict, function(req, res){
   res.send('Wahoo! restricted area, click to <a href="/logout">logout</a>');
 });
 
-app.get('/main', restrict, function(req, res){
-  var games;
-  Game.find(function (err, games) {
-  if (err) return console.error(err);
-    res.render('main');
-  })
 
-
-});
 
 app.get('/logout', function(req, res){
   // destroy the user's session to log them out
