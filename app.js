@@ -71,8 +71,6 @@ app.use(function(req, res, next){
 // Authenticate using our plain-object database of doom!
 
 function authenticate(name, pass, fn) {
-  if (!module.parent) console.log('authenticating %s:%s', name, pass);
-
   var query = User.findOne({ 'name': name });
   query.select('name password salt');
   query.exec(function (err, user) {
@@ -90,24 +88,12 @@ function authenticate(name, pass, fn) {
 }
 
 function restrict(req, res, next) {
-  // req.session.user = "Martin";
-
   if (req.session.user) {
     next();
   } else {
-    req.session.error = 'Access denied!';
     res.redirect('/login');
   }
 }
-
-// app.get('/', restrict,function(req, res){
-//       Game.find(function (err, data) {
-//       if (err) return console.error(err);
-//         res.locals.games = data;
-//         res.locals.user = req.session.user;
-//         res.render('main');
-//       });
-// });
 
 app.get('/', restrict, function(req, res){
   getAllGamesAndSessions(function (games, sessions) {
@@ -241,12 +227,6 @@ app.get('/delete/:id', restrict,function(req, res){
           res.redirect('/games');
       })
 });
-
-app.get('/restricted', restrict, function(req, res){
-  res.send('Wahoo! restricted area, click to <a href="/logout">logout</a>');
-});
-
-
 
 app.get('/logout', function(req, res){
   // destroy the user's session to log them out
