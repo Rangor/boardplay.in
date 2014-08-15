@@ -2,10 +2,13 @@
 <% include head %>
 <% include auth_menu %>
 <h2><%= game.name %></h2>
-<h3><a href="/logsession">Log a session</a></h3>
-<h3>BGG Link</h3>
-<h3>Number of players:</h3>
-<h3>Number of registered plays</h3>
+<h4><a href="/logsession">Log a session</a></h4>
+<a href="<%= game.bggLink %>">BGG Link</a><br>
+Number of players: <%= game.numberOfPlayers %><br>
+Description: <%= game.description %><br><br>
+Number of registered plays:<br><br>
 
+<% if (user.name === "martin") { %>
 <a href="/delete/<%= game._id %>">Delete</a>
+<% } %>
 <% include foot %>

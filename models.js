@@ -1,7 +1,10 @@
 var mongoose = require("mongoose");
 
 var gameSchema = mongoose.Schema({
-    name: String
+    name : {type:String, required: true},
+    bggLink: String,
+    numberOfPlayers: String,
+    description : String
 })
 
 var sessionSchema = mongoose.Schema({

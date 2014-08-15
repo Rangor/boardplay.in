@@ -1,0 +1,14 @@
+<% var title = 'Im Playing' %>
+<% include head %>
+<% include auth_menu %>
+<br>
+<% if (users) { %>
+<h3>Users</h3>
+  <ul>
+    <% users.forEach(function(usr){ %>
+      <a href="/user/<%= usr._id %>"><li><%= usr.name %></a></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<% include foot %>

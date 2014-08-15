@@ -116,6 +116,15 @@ app.get('/games', restrict,function(req, res){
       });
 });
 
+app.get('/users', restrict,function(req, res){
+      User.find(function (err, data) {
+      if (err) return console.error(err);
+        res.locals.users = data;
+        res.locals.user = req.session.user;
+        res.render('users');
+      });
+});
+
 function getAllGames(fn){
   Game.find(function (err, data) {
   if (err) return console.error(err);
@@ -154,6 +163,9 @@ app.post('/newgame', restrict,function(req, res){
         // console.log("New game added, name:" + req.param("name"));
         var game = new Game();
         game.name = req.param("name");
+        game.bggLink = req.param("bggLink");
+        game.description = req.param("description");
+        game.numberOfPlayers = req.param("numberOfPlayers");
         game.save(function () {
           res.locals.user = req.session.user;
           res.redirect('games');
@@ -209,7 +221,7 @@ app.get('/game/:id', restrict,function(req, res){
       var selectedId = req.param("id");
 
       var query = Game.findOne({ '_id': selectedId });
-      query.select('name');
+      query.select('name bggLink description numberOfPlayers');
       query.exec(function (err, game) {
         if (err) return handleError(err);
           res.locals.game = game;

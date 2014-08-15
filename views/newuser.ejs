@@ -4,7 +4,7 @@
 <br>
 <form name="input" action="/newuser" method="post">
 User name: <input type="text" required="true" name="name"><br>
-User password: <input type="password" required="true" name="password"><br>
+User password: <input type="password" required="true" pattern=".{5,}" equired title="5 characters minimum" name="password"><br>
 <input type="submit" value="Submit">
 </form>
 
