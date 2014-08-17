@@ -25,6 +25,8 @@ process.env.MONGOHQ_URL ||
 // port 5000.
 var theport = process.env.PORT || 5000;
 
+var oneDay = 86400000;
+
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
 mongoose.connect(uristring, function (err, res) {
@@ -45,6 +47,11 @@ var app = module.exports = express();
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
+
+app.configure(function(){
+  app.use('/css', express.static(__dirname + '/css'));
+  app.use(express.static(__dirname + '/public'));
+});
 
 // middleware
 

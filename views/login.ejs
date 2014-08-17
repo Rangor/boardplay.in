@@ -1,8 +1,8 @@
 <% include head %>
+<div class="container">
 
-<h1>Login</h1>
 <%- message %>
-<a href="/newuser">Create new user</a>
+
 <form method="post" action="/login">
   <p>
     <label>Username:</label>
@@ -16,5 +16,6 @@
     <input type="submit" value="Login">
   </p>
 </form>
-
+<a href="/newuser">Create new user</a>
+</div>
 <% include foot %>
