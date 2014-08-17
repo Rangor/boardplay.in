@@ -2,9 +2,18 @@
 <% include head %>
 <% include auth_menu %>
 <h2><%= game.name %></h2>
+
+<% if (game.bggLink) { %>
 <a href="<%= game.bggLink %>">BGG Link</a><br>
+<% } %>
+
+<% if (game.description) { %>
 Description: <%= game.description %><br><br>
-Number of registered plays:<br><br>
+<% } %>
+
+
+
+
 
 <a href="/edit/<%= game._id %>">Edit</a>
 
