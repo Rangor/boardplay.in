@@ -4,7 +4,10 @@ var gameSchema = mongoose.Schema({
     name : {type:String, required: true},
     bggLink: String,
     numberOfPlayers: String,
-    description : String
+    maxNumberOfPlayers: Number,
+    description: String,
+    isExpansion: Boolean,
+    expansionToGame: String
 })
 
 var sessionSchema = mongoose.Schema({

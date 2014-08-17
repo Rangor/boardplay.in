@@ -165,7 +165,6 @@ app.post('/newgame', restrict,function(req, res){
         game.name = req.param("name");
         game.bggLink = req.param("bggLink");
         game.description = req.param("description");
-        game.numberOfPlayers = req.param("numberOfPlayers");
         game.save(function () {
           res.locals.user = req.session.user;
           res.redirect('games');
@@ -221,7 +220,7 @@ app.get('/game/:id', restrict,function(req, res){
       var selectedId = req.param("id");
 
       var query = Game.findOne({ '_id': selectedId });
-      query.select('name bggLink description numberOfPlayers');
+      query.select('name bggLink description');
       query.exec(function (err, game) {
         if (err) return handleError(err);
           res.locals.game = game;
@@ -238,6 +237,32 @@ app.get('/delete/:id', restrict,function(req, res){
         if (err) return handleError(err);
           res.redirect('/games');
       })
+});
+
+app.get('/edit/:id', restrict,function(req, res){
+      var selectedId = req.param("id");
+      var query = Game.findOne({ '_id': selectedId });
+      query.select('name bggLink description');
+      query.exec(function (err, game) {
+        if (err) return handleError(err);
+          res.locals.game = game;
+          res.locals.user = req.session.user;
+          res.render('editgame');
+      })
+});
+
+app.post('/edit', restrict,function(req, res){
+      var selectedId = req.param("id");
+      Game.findById(selectedId, function (err, game) {
+      if (err) return handleError(err);
+          game.name = req.param("name");
+          game.bggLink = req.param("bggLink");
+          game.description = req.param("description");
+          game.save(function (err) {
+            if (err) return handleError(err);
+              res.redirect(/game/+game._id);
+          });
+    }); 
 });
 
 app.get('/logout', function(req, res){
