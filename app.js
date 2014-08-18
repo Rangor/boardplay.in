@@ -47,12 +47,9 @@ var app = module.exports = express();
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
+app.use('/css', express.static(__dirname + '/public/css'));
+app.use('/js', express.static(__dirname + '/public/js'));
 
-app.configure(function(){
-  app.use('/css', express.static(__dirname + '/css'));
-  app.use('/js', express.static(__dirname + '/js'));
-  app.use(express.static(__dirname + '/public'));
-});
 
 // middleware
 
