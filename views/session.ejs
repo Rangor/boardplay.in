@@ -1,0 +1,21 @@
+<% include head %>
+<% include auth_menu %>
+
+<div class="panel panel-default">
+ <div class="panel-heading">
+    <h3 class="panel-title"><%= session.userName %> played <%= session.gameName %> on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %></h3>
+  </div>
+  <div class="panel-body">
+    <%= session.summary %>
+  </div>
+</div>
+
+
+
+
+
+<% if (user.name === "martin") { %>
+<a href="/editgame/<%= session._id %>">Edit</a>
+<a href="/deletesession/<%= session._id %>">Delete</a>
+<% } %>
+<% include foot %>

@@ -179,10 +179,11 @@ function getLatestGamesAndSessions(fn){
 app.get('/sessions', restrict,function(req, res){
       var query = Session.find();
       query.sort("-date");
-      query.select('userName gameName date summary gravatarHash');
+      query.select('userName gameName date summary gravatarHash _id');
       query.exec(function (err, data) {
       if (err) return console.error(err);
         res.locals.sessions = data;
+        console.log(data[0])
         res.locals.user = req.session.user;
         res.render('sessions');
       });
@@ -247,6 +248,29 @@ app.post('/newuser', function(req, res){
           });
 
         });
+});
+
+app.get('/session/:id', restrict,function(req, res){
+
+      var selectedId = req.param("id");
+
+      var query = Session.findOne({ '_id': selectedId });
+      query.select('gameName date userName summary');
+      query.exec(function (err, session) {
+        if (err) return handleError(err);
+          res.locals.session = session;
+          res.locals.user = req.session.user;
+          res.render('session');
+      })
+});
+
+app.get('/deletesession/:id', restrict,function(req, res){
+      var selectedId = req.param("id");
+      var query = Session.findOne({ '_id': selectedId });
+      query.remove(function (err, session) {
+        if (err) return handleError(err);
+          res.redirect('/sessions');
+      })
 });
 
 app.get('/game/:id', restrict,function(req, res){

@@ -1,0 +1,11 @@
+<% include head %>
+<% include auth_menu %>
+<br>
+<h3>Edit game</h3>
+<form name="input" action="/editsession" method="post">
+<input type="hidden" value="<%= game._id %>" name="id">
+Game name: <input type="text" value="<%= game.name %>" name="name"><br>
+BGG Link: <input type="text" value="<%= game.bggLink %>" name="bggLink"><br>
+Description: <input type="text" value="<%= game.description %>" name="description"><br>
+<input type="submit" value="Submit">
+</form>
