@@ -9,7 +9,7 @@ var session = require('express-session');
 var Game = require("./models").Game;
 var Session = require("./models").Session;
 var User = require("./models").User;
-
+var md5 = require('MD5');
 
 var http = require ('http');             // For serving a basic web page.
 var mongoose = require ("mongoose"); // The reason for this demo.
@@ -101,7 +101,7 @@ function restrict(req, res, next) {
 }
 
 app.get('/', restrict, function(req, res){
-  getAllGamesAndSessions(function (games, sessions) {
+  getLatestGamesAndSessions(function (games, sessions) {
     // console.log("/main sessions:" + sessions);
     res.locals.sessions = sessions;
     res.locals.user = req.session.user;
@@ -153,6 +153,22 @@ function getAllGamesAndSessions(fn){
   Game.find(function (err, games) {
   if (err) return console.error(err);
     Session.find(function (err, sessions) {
+    if (err) return console.error(err);
+      return fn(games, sessions);
+    });
+  });
+}
+
+function getLatestGamesAndSessions(fn){
+  var query = Game.find();
+  query.limit(5);
+  query.select('name bggLink description');
+  query.exec(function (err, games) {
+  if (err) return console.error(err);
+    var query = Session.find();
+    query.limit(5);
+    query.select('userName gameName date summary');
+    query.exec(function (err, sessions) {
     if (err) return console.error(err);
       return fn(games, sessions);
     });
@@ -275,6 +291,59 @@ app.post('/editgame', restrict,function(req, res){
           game.save(function (err) {
             if (err) return handleError(err);
               res.redirect(/game/+game._id);
+          });
+    }); 
+});
+
+app.get('/user/:id', restrict,function(req, res){
+
+      var selectedId = req.param("id");
+
+      var query = User.findOne({ '_id': selectedId });
+      query.select('name bggLink email gravatarHash');
+      query.exec(function (err, user) {
+        if (err) return handleError(err);
+          res.locals.userEdit = user;
+          res.locals.user = req.session.user;
+          res.render('user');
+      })
+});
+
+app.get('/deleteuser/:id', restrict,function(req, res){
+      var selectedId = req.param("id");
+      var query = Game.findOne({ '_id': selectedId });
+      query.select('name');
+      query.remove(function (err, game) {
+        if (err) return handleError(err);
+          res.redirect('/games');
+      })
+});
+
+app.get('/edituser/:id', restrict,function(req, res){
+      var selectedId = req.param("id");
+      var query = User.findOne({ '_id': selectedId });
+      query.select('name bggLink email');
+      query.exec(function (err, user) {
+        if (err) return handleError(err);
+          res.locals.userEdit = user;
+          res.locals.user = req.session.user;
+          res.render('edituser');
+      })
+});
+
+app.post('/edituser', restrict,function(req, res){
+      var selectedId = req.param("id");
+      User.findById(selectedId, function (err, user) {
+      if (err) return handleError(err);
+          user.displayName = req.param("displayName");
+          user.bggLink = req.param("bggLink");
+          user.email = req.param("email");
+          var gravatar = md5(user.email);
+          console.log("Gravatarhash: " +gravatar);
+          user.gravatarHash = gravatar;
+          user.save(function (err) {
+            if (err) return handleError(err);
+              res.redirect(/user/+user._id);
           });
     }); 
 });

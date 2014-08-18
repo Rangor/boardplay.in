@@ -23,7 +23,15 @@ var sessionSchema = mongoose.Schema({
 var userSchema = mongoose.Schema({
     name: {type:String, required: true,unique: true},
     password: {type:String, required: true},
-    salt:{type:String, required:true}
+    salt:{type:String, required:true},
+    bggLink: String,
+    bgLink: String,
+    homepage: String,
+    twitter: String,
+    email: String,
+    displayName: String,
+    gplus: String,
+    gravatarHash: String
 })
 
 var Game = mongoose.model('Game', gameSchema);

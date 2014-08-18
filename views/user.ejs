@@ -1,0 +1,21 @@
+<% include head %>
+<% include auth_menu %>
+<h2><%= userEdit.name %></h2>
+
+<% if (userEdit.bggLink && userEdit.bggLink != "undefined") { %>
+<a href="<%= userEdit.bggLink %>">BGG Link</a><br>
+<% } %>
+
+<% if (userEdit.email) { %>
+Email: <%= userEdit.email %><br><br>
+<% } %>
+
+<% if (userEdit.gravatarHash) { %>
+<img src="http://www.gravatar.com/avatar/<%= userEdit.gravatarHash %>" />
+<% } %>
+
+<% if (user.name === userEdit.name) { %>
+<a href="/edituser/<%= userEdit._id %>">Edit</a>
+<a href="/deleteuser/<%= user._id %>">Delete</a>
+<% } %>
+<% include foot %>
