@@ -1,7 +1,7 @@
 <% if (sessions) { %>
   <ul class="list-group">
     <% sessions.forEach(function(session){ %>
-      <li class="list-group-item"><img width="50" src="http://www.gravatar.com/avatar/<%= session.gravatarHash %>" /><b><%= session.userName %></b> played <b><%= session.gameName %></b> on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %> - <%= session.summary %>
+      <li class="list-group-item"><img width="50" src="http://www.gravatar.com/avatar/<%= session.gravatarHash %>" /> <b><%= session.userName %></b> played <b><%= session.gameName %></b> on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %> - <%= session.summary %>
       </li>
     <% }) %>
   </ul>

@@ -167,6 +167,7 @@ function getLatestGamesAndSessions(fn){
   if (err) return console.error(err);
     var query = Session.find();
     query.limit(5);
+    query.sort('-date');
     query.select('userName gameName date summary gravatarHash');
     query.exec(function (err, sessions) {
     if (err) return console.error(err);
@@ -176,7 +177,10 @@ function getLatestGamesAndSessions(fn){
 }
 
 app.get('/sessions', restrict,function(req, res){
-      Session.find(function (err, data) {
+      var query = Session.find();
+      query.sort("-date");
+      query.select('userName gameName date summary gravatarHash');
+      query.exec(function (err, data) {
       if (err) return console.error(err);
         res.locals.sessions = data;
         res.locals.user = req.session.user;
