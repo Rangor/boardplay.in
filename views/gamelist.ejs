@@ -1,0 +1,7 @@
+<% if (games) { %>
+  <ul>
+    <% games.forEach(function(game){ %>
+      <a href="/game/<%= game._id %>"><li><%= game.name %></a></li>
+    <% }) %>
+  </ul>
+<% } %>

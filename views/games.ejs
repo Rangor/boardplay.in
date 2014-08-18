@@ -1,14 +1,7 @@
 <% include head %>
 <% include auth_menu %>
 <br>
-<a href="/newgame">Add new game to database</a>
-<% if (games) { %>
+<a class="button" href="/newgame">Add new game to database</a>
 <h3>Games</h3>
-  <ul>
-    <% games.forEach(function(game){ %>
-      <a href="/game/<%= game._id %>"><li><%= game.name %></a></li>
-    <% }) %>
-  </ul>
-<% } %>
-
+<% include gamelist %>
 <% include foot %>

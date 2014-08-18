@@ -138,13 +138,22 @@ function getAllGames(fn){
   });
 }
 
+function getLatestGames(fn){
+  var query = Game.find();
+  query.limit(5);
+  query.select('name bggLink description');
+  query.exec(function (err, data) {
+  if (err) return console.error(err);
+    // console.log("Got all the games " + data);
+    return fn(data);
+  });
+}
+
 function getAllGamesAndSessions(fn){
   Game.find(function (err, games) {
   if (err) return console.error(err);
-    // console.log("Found games: " + games);
     Session.find(function (err, sessions) {
     if (err) return console.error(err);
-      // console.log("Found sessions: " + sessions);
       return fn(games, sessions);
     });
   });
@@ -234,7 +243,7 @@ app.get('/game/:id', restrict,function(req, res){
       })
 });
 
-app.get('/delete/:id', restrict,function(req, res){
+app.get('/deletegame/:id', restrict,function(req, res){
       var selectedId = req.param("id");
       var query = Game.findOne({ '_id': selectedId });
       query.select('name');
@@ -244,7 +253,7 @@ app.get('/delete/:id', restrict,function(req, res){
       })
 });
 
-app.get('/edit/:id', restrict,function(req, res){
+app.get('/editgame/:id', restrict,function(req, res){
       var selectedId = req.param("id");
       var query = Game.findOne({ '_id': selectedId });
       query.select('name bggLink description');
@@ -256,7 +265,7 @@ app.get('/edit/:id', restrict,function(req, res){
       })
 });
 
-app.post('/edit', restrict,function(req, res){
+app.post('/editgame', restrict,function(req, res){
       var selectedId = req.param("id");
       Game.findById(selectedId, function (err, game) {
       if (err) return handleError(err);

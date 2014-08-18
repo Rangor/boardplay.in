@@ -1,0 +1,11 @@
+<% if (sessions) { %>
+  <ul class="list-group">
+    <% sessions.forEach(function(session){ %>
+      <li class="list-group-item"><b><%= session.userName %></b> played <b><%= session.gameName %></b> on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %>
+        <% if (session.summary) { %>
+            <ul><li><%= session.summary %> </li></ul>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>

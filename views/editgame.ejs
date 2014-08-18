@@ -2,7 +2,7 @@
 <% include auth_menu %>
 <br>
 <h3>Edit game</h3>
-<form name="input" action="/edit" method="post">
+<form name="input" action="/editgame" method="post">
 <input type="hidden" value="<%= game._id %>" name="id">
 Game name: <input type="text" value="<%= game.name %>" name="name"><br>
 BGG Link: <input type="text" value="<%= game.bggLink %>" name="bggLink"><br>

@@ -2,7 +2,7 @@
 <% include auth_menu %>
 <h2><%= game.name %></h2>
 
-<% if (game.bggLink) { %>
+<% if (game.bggLink && game.bggLink != "undefined") { %>
 <a href="<%= game.bggLink %>">BGG Link</a><br>
 <% } %>
 
@@ -14,9 +14,9 @@ Description: <%= game.description %><br><br>
 
 
 
-<a href="/edit/<%= game._id %>">Edit</a>
+<a href="/editgame/<%= game._id %>">Edit</a>
 
 <% if (user.name === "martin") { %>
-<a href="/delete/<%= game._id %>">Delete</a>
+<a href="/deletegame/<%= game._id %>">Delete</a>
 <% } %>
 <% include foot %>

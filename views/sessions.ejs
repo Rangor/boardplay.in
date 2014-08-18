@@ -1,17 +1,6 @@
 <% include head %>
 <% include auth_menu %>
 <br>
-<% if (sessions) { %>
 <h3>Recent gaming sessions</h3>
-  <ul>
-    <% sessions.forEach(function(session){ %>
-      <li><%= session.userName %> played <%= session.gameName %> on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %>
-        <% if (session.summary) { %>
-            <ul><li>Summary: <%= session.summary %> </li></ul>
-        <% } %>
-      </li>
-    <% }) %>
-  </ul>
-<% } %>
-
+<% include sessionlist %>
 <% include foot %>
