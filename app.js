@@ -167,7 +167,7 @@ function getLatestGamesAndSessions(fn){
   if (err) return console.error(err);
     var query = Session.find();
     query.limit(5);
-    query.select('userName gameName date summary');
+    query.select('userName gameName date summary gravatarHash');
     query.exec(function (err, sessions) {
     if (err) return console.error(err);
       return fn(games, sessions);
@@ -339,7 +339,12 @@ app.post('/edituser', restrict,function(req, res){
           user.bggLink = req.param("bggLink");
           user.email = req.param("email");
           var gravatar = md5(user.email);
-          console.log("Gravatarhash: " +gravatar);
+          if(gravatar != user.gravatarHash){
+            console.log("New hash, updating sessions");
+            updateSessionsWithGravatarHash(req.session.user.name, gravatar);
+          }else{
+            console.log("Same old hash");
+          }
           user.gravatarHash = gravatar;
           user.save(function (err) {
             if (err) return handleError(err);
@@ -347,6 +352,18 @@ app.post('/edituser', restrict,function(req, res){
           });
     }); 
 });
+
+function updateSessionsWithGravatarHash(userName, newGravatarHash){
+  var query = Session.find({'userName' : userName});
+  query.select("gravatarHash");
+  query.exec(function(err,sessions){
+    for(i in sessions){
+      sessions[i].gravatarHash = newGravatarHash;
+      sessions[i].save(function(err){
+      });
+    }
+  });
+}
 
 app.get('/logout', function(req, res){
   // destroy the user's session to log them out

@@ -17,7 +17,8 @@ var sessionSchema = mongoose.Schema({
     gameId : {type:String, required: true},
     date: {type: Date, default: Date.now},
     duration: Number,
-    summary: String
+    summary: String,
+    gravatarHash: String
 })
 
 var userSchema = mongoose.Schema({
