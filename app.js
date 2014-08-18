@@ -77,7 +77,7 @@ app.use(function(req, res, next){
 
 function authenticate(name, pass, fn) {
   var query = User.findOne({ 'name': name });
-  query.select('name password salt');
+  query.select('name password salt');//Todo something went wrong on the server here, salt was null or something
   query.exec(function (err, user) {
       if (err) return handleError(err);
 
