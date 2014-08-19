@@ -237,7 +237,10 @@ app.get('/newuser', function(req, res){
 app.post('/newuser', function(req, res){
         var user = new User();
         user.name = req.param("name");
-
+        if(req.param("invitekey") != "thisismyinvitekey"){
+            res.locals.errormessage = "Wrong invite key";
+            res.render('newuser');
+        }else{
         hash(req.param("password"), function(err, salt, hash){
         if (err) throw err;
           user.salt = salt;
@@ -248,6 +251,7 @@ app.post('/newuser', function(req, res){
           });
 
         });
+      }
 });
 
 app.get('/session/:id', restrict,function(req, res){
@@ -368,10 +372,7 @@ app.post('/edituser', restrict,function(req, res){
           user.email = req.param("email");
           var gravatar = md5(user.email);
           if(gravatar != user.gravatarHash){
-            console.log("New hash, updating sessions");
             updateSessionsWithGravatarHash(req.session.user.name, gravatar);
-          }else{
-            console.log("Same old hash");
           }
           user.gravatarHash = gravatar;
           user.save(function (err) {
@@ -394,8 +395,6 @@ function updateSessionsWithGravatarHash(userName, newGravatarHash){
 }
 
 app.get('/logout', function(req, res){
-  // destroy the user's session to log them out
-  // will be re-created next request
   req.session.destroy(function(){
     res.redirect('/');
   });
@@ -408,19 +407,13 @@ app.get('/login', function(req, res){
 app.post('/login', function(req, res){
   authenticate(req.body.username, req.body.password, function(err, user){
     if (user) {
-      // Regenerate session when signing in
-      // to prevent fixation
       req.session.regenerate(function(){
-        // Store the user's primary key
-        // in the session store to be retrieved,
-        // or in this case the entire user object
         req.session.user = user;
         res.redirect('/');
       });
     } else {
       req.session.error = 'Authentication failed, please check your '
-        + ' username and password.'
-        + ' (use "tj" and "foobar")';
+        + ' username and password.';
       res.redirect('/login');
     }
   });

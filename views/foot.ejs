@@ -8,5 +8,9 @@
 	  ga('send', 'pageview');
 
 	</script>
+	<% if (locals.errormessage){ %>
+		<br>
+		<p>Error message: <%= locals.errormessage %><p>
+	<% } %>
   </body>
 </html>

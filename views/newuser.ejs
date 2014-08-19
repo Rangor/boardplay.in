@@ -1,10 +1,25 @@
 <% include head %>
 <% include auth_menu %>
-<br>
+<h3>Create user</h3>
+<div class="container">
+
 <form name="input" action="/newuser" method="post">
-User name: <input type="text" required="true" name="name"><br>
-User password: <input type="password" required="true" pattern=".{5,}" equired title="5 characters minimum" name="password"><br>
-<input type="submit" value="Submit">
+  <p>
+    <label>Username:</label>
+    <input type="text" required="true" name="name">
+  </p>
+  <p>
+    <label>Password:</label>
+    <input type="password" required="true" pattern=".{5,}" equired title="5 characters minimum" name="password">
+  </p>
+    <p>
+    <label>Invite key:</label>
+    <input type="text" required="true" name="invitekey">
+  </p>
+  <p>
+    <input type="submit" value="Submit">
+  </p>
 </form>
+</div>
 
 <% include foot %>
