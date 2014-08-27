@@ -102,7 +102,6 @@ function restrict(req, res, next) {
 
 app.get('/', restrict, function(req, res){
   getLatestGamesAndSessions(function (games, sessions) {
-    // console.log("/main sessions:" + sessions);
     res.locals.sessions = sessions;
     res.locals.user = req.session.user;
     res.locals.games = games;
@@ -133,7 +132,6 @@ app.get('/users', restrict,function(req, res){
 function getAllGames(fn){
   Game.find(function (err, data) {
   if (err) return console.error(err);
-    // console.log("Got all the games " + data);
     return fn(data);
   });
 }
@@ -144,7 +142,6 @@ function getLatestGames(fn){
   query.select('name bggLink description');
   query.exec(function (err, data) {
   if (err) return console.error(err);
-    // console.log("Got all the games " + data);
     return fn(data);
   });
 }
@@ -168,10 +165,10 @@ function getLatestGamesAndSessions(fn){
   if (err) return console.error(err);
     var query = Session.find();
     query.limit(30);
-    query.sort('date');
+    query.sort("-date");
     query.select('userName gameName date summary gravatarHash');
     query.exec(function (err, sessions) {
-    if (err) return console.error(err);      
+    if (err) return console.error(err);
       for(i = 0; i < sessions.length; i++){
         var next = +i + +1;
         if(next < sessions.length){
@@ -182,12 +179,13 @@ function getLatestGamesAndSessions(fn){
                var tempSession = sessions[0];
                sessions[0] = sessions[i];
                sessions[i]  = tempSession;
-               i = 0;
+               i = -1;
              }
              sessions.shift();   
           }
         }
       }
+      sessions.sort(function(a,b) { return b.date - a.date } );
       return fn(games, sessions);
     });
   });
@@ -200,7 +198,6 @@ app.get('/sessions', restrict,function(req, res){
       query.exec(function (err, data) {
       if (err) return console.error(err);
         res.locals.sessions = data;
-        console.log(data[0])
         res.locals.user = req.session.user;
         res.render('sessions');
       });
@@ -212,7 +209,6 @@ app.get('/newgame', restrict,function(req, res){
 });
 
 app.post('/newgame', restrict,function(req, res){
-        // console.log("New game added, name:" + req.param("name"));
         var game = new Game();
         game.name = req.param("name");
         game.bggLink = req.param("bggLink");
@@ -239,8 +235,6 @@ app.post('/logsession', restrict,function(req, res){
         session.userName = req.session.user.name;
         session.userId = req.session.user._id;
         session.gravatarHash = req.session.user.gravatarHash;
-        console.log(req.session.user.gravatarHash);
-        console.log(req.session.user);
         session.date = req.param("date");
         session.summary = req.param("summary");
         session.save(function () {
