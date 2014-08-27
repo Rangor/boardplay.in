@@ -1,19 +1,30 @@
 <% include head %>
 <% include auth_menu %>
-<h2><%= userEdit.name %></h2>
-
-<% if (userEdit.bggLink && userEdit.bggLink != "undefined") { %>
-<a href="<%= userEdit.bggLink %>">BGG Link</a><br>
+        <h3><%= userEdit.name %></h3>
+      <% if (userEdit.gravatarHash) { %>
+		<img src="http://www.gravatar.com/avatar/<%= userEdit.gravatarHash %>" />
+		<% } %>
+<% if (locals.numberOfSessions) { %>
+<h4>Number of sessions</h4> 
+<%= locals.numberOfSessions %>
 <% } %>
 
-<% if (userEdit.email) { %>
-Email: <%= userEdit.email %><br><br>
-<% } %>
 
-<% if (userEdit.gravatarHash) { %>
-<img src="http://www.gravatar.com/avatar/<%= userEdit.gravatarHash %>" />
+<% if (locals.gamesList) { %>
+<h4>Games played</h4>
+<% for(var key in locals.gamesList){ %>
+<%= locals.gamesList[key] %>,
 <% } %>
-
+<% } %>
+<h4>Latest sessions</h4>
+<ul class="list-group">
+    <% for(var i=0; i < 4; i++){ %>
+      <li class="list-group-item">
+      <b><%= locals.sessions[i].userName %></b> played <b><%= locals.sessions[i].gameName %></b>
+       on <a href="/locals.sessions[i]/<%= locals.sessions[i]._id %>"><%= locals.sessions[i].date.getDate() %>/<%= locals.sessions[i].date.getMonth()+1 %>/<%= locals.sessions[i].date.getFullYear() %></a> - <%= locals.sessions[i].summary %>
+      </li>
+    <% } %>
+  </ul>
 <% if (user.name === userEdit.name) { %>
 <a href="/edituser/<%= userEdit._id %>">Edit</a>
 <a href="/deleteuser/<%= user._id %>">Delete</a>

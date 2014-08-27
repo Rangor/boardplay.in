@@ -136,26 +136,6 @@ function getAllGames(fn){
   });
 }
 
-function getLatestGames(fn){
-  var query = Game.find();
-  query.limit(5);
-  query.select('name bggLink description');
-  query.exec(function (err, data) {
-  if (err) return console.error(err);
-    return fn(data);
-  });
-}
-
-function getAllGamesAndSessions(fn){
-  Game.find(function (err, games) {
-  if (err) return console.error(err);
-    Session.find(function (err, sessions) {
-    if (err) return console.error(err);
-      return fn(games, sessions);
-    });
-  });
-}
-
 function getLatestGamesAndSessions(fn){
   var query = Game.find();
   query.limit(5);
@@ -348,10 +328,23 @@ app.get('/user/:id', restrict,function(req, res){
       var query = User.findOne({ '_id': selectedId });
       query.select('name bggLink email gravatarHash');
       query.exec(function (err, user) {
-        if (err) return handleError(err);
-          res.locals.userEdit = user;
-          res.locals.user = req.session.user;
-          res.render('user');
+        var sessionQuery = Session.find().where('userName').equals(req.session.user.name);
+        sessionQuery.select('gameName userName date summary');
+        sessionQuery.sort('-date');
+        sessionQuery.exec(function (err, sessions){
+          if (err) return handleError(err);
+           var gamesDict = {};
+           for(i = 0; i < sessions.length; i++){
+              gamesDict[sessions[i].gameName] = sessions[i].gameName;
+           }
+           console.log(gamesDict);
+           res.locals.userEdit = user;
+           res.locals.user = req.session.user;
+           res.locals.numberOfSessions = sessions.length;
+           res.locals.gamesList = gamesDict;
+           res.locals.sessions = sessions;
+           res.render('user');
+        })
       })
 });
 
