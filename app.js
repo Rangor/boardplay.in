@@ -344,7 +344,6 @@ app.get('/user/:id', restrict,function(req, res){
            for(i = 0; i < sessions.length; i++){
               gamesDict[sessions[i].gameName] = sessions[i].gameName;
            }
-           console.log(gamesDict);
            res.locals.userEdit = user;
            res.locals.user = req.session.user;
            res.locals.numberOfSessions = sessions.length;
@@ -357,12 +356,16 @@ app.get('/user/:id', restrict,function(req, res){
 
 app.get('/deleteuser/:id', restrict,function(req, res){
       var selectedId = req.param("id");
-      var query = Game.findOne({ '_id': selectedId });
-      query.select('name');
-      query.remove(function (err, game) {
-        if (err) return handleError(err);
-          res.redirect('/games');
-      })
+      if(req.session.user._id != selectedId){
+        res.redirect('/');
+      }else{
+        var query = Game.findOne({ '_id': selectedId });
+        query.select('name');
+        query.remove(function (err, game) {
+          if (err) return handleError(err);
+            res.redirect('/games');
+        })
+      }
 });
 
 app.get('/edituser/:id', restrict,function(req, res){
