@@ -77,7 +77,7 @@ app.use(function(req, res, next){
 
 function authenticate(name, pass, fn) {
   var query = User.findOne({ 'name': name });
-  query.select('name password salt');//Todo something went wrong on the server here, salt was null or something
+  query.select('name password salt gravatarHash');//Todo something went wrong on the server here, salt was null or something
   query.exec(function (err, user) {
       if (err) return handleError(err);
 
@@ -221,6 +221,9 @@ app.post('/logsession', restrict,function(req, res){
         session.gameId = game[0];
         session.userName = req.session.user.name;
         session.userId = req.session.user._id;
+        session.gravatarHash = req.session.user.gravatarHash;
+        console.log(req.session.user.gravatarHash);
+        console.log(req.session.user);
         session.date = req.param("date");
         session.summary = req.param("summary");
         session.save(function () {
