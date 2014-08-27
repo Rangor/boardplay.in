@@ -5,3 +5,12 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+
+.big_number {
+  font-size: 150%;
+}
+
+.tools {
+   padding-top: 40px;
+  font-size: 110%;
+}

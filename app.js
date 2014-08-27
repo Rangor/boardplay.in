@@ -279,9 +279,13 @@ app.get('/game/:id', restrict,function(req, res){
       query.select('name bggLink description');
       query.exec(function (err, game) {
         if (err) return handleError(err);
-          res.locals.game = game;
-          res.locals.user = req.session.user;
-          res.render('game');
+        var sessionQuery = Session.find().where("gameName").equals(game.name);
+          sessionQuery.exec(function(err, sessions){
+            res.locals.numberOfSessions = sessions.length;          
+            res.locals.game = game;
+            res.locals.user = req.session.user;
+            res.render('game');
+          })
       })
 });
 
@@ -426,7 +430,6 @@ app.post('/login', function(req, res){
   });
 });
 
-/* istanbul ignore next */
 if (!module.parent) {
   var port = Number(process.env.PORT || 5000);
   app.listen(port, function() {

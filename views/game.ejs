@@ -3,20 +3,22 @@
 <h2><%= game.name %></h2>
 
 <% if (game.bggLink && game.bggLink != "undefined") { %>
-<a href="<%= game.bggLink %>">BGG Link</a><br>
+<a href="<%= game.bggLink %>"><h4>more info</h4></a><br>
 <% } %>
 
 <% if (game.description) { %>
-Description: <%= game.description %><br><br>
+<h4>Description</h4>
+<%= game.description %><br><br>
 <% } %>
 
-
-
-
-
+<% if (locals.numberOfSessions) { %>
+<h4>Number of registered sessions</h4>
+<div class="big_number"><%= locals.numberOfSessions %></div>
+<% } %>
+<div class="tools">
 <a href="/editgame/<%= game._id %>">Edit</a>
-
 <% if (user.name === "martin") { %>
 <a href="/deletegame/<%= game._id %>">Delete</a>
 <% } %>
+<div>
 <% include foot %>
