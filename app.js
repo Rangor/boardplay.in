@@ -167,11 +167,27 @@ function getLatestGamesAndSessions(fn){
   query.exec(function (err, games) {
   if (err) return console.error(err);
     var query = Session.find();
-    query.limit(5);
-    query.sort('-date');
+    query.limit(30);
+    query.sort('date');
     query.select('userName gameName date summary gravatarHash');
     query.exec(function (err, sessions) {
-    if (err) return console.error(err);
+    if (err) return console.error(err);      
+      for(i = 0; i < sessions.length; i++){
+        var next = +i + +1;
+        if(next < sessions.length){
+          if(sessions[i].userName === sessions[next].userName && sessions[i].date.getDate() === sessions[next].date.getDate()){
+             sessions[next].gameName = sessions[next].gameName+", "+sessions[i].gameName;
+             sessions[next].summary = "";
+             if(i > 0){
+               var tempSession = sessions[0];
+               sessions[0] = sessions[i];
+               sessions[i]  = tempSession;
+               i = 0;
+             }
+             sessions.shift();   
+          }
+        }
+      }
       return fn(games, sessions);
     });
   });
