@@ -144,7 +144,7 @@ function getLatestGamesAndSessions(fn){
   query.exec(function (err, games) {
   if (err) return console.error(err);
     var query = Session.find();
-    query.limit(30);
+    query.limit(25);
     query.sort("-date");
     query.select('userName gameName date summary gravatarHash');
     query.exec(function (err, sessions) {
@@ -166,6 +166,9 @@ function getLatestGamesAndSessions(fn){
         }
       }
       sessions.sort(function(a,b) { return b.date - a.date } );
+      while(sessions.length > 5){
+        sessions.pop();
+      }
       return fn(games, sessions);
     });
   });
