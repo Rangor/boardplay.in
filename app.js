@@ -332,7 +332,7 @@ app.get('/user/:id', restrict,function(req, res){
       var query = User.findOne({ '_id': selectedId });
       query.select('name bggLink email gravatarHash');
       query.exec(function (err, user) {
-        var sessionQuery = Session.find().where('userName').equals(req.session.user.name);
+        var sessionQuery = Session.find().where('userName').equals(user.name);
         sessionQuery.select('gameName userName date summary');
         sessionQuery.sort('-date');
         sessionQuery.exec(function (err, sessions){

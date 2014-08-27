@@ -16,6 +16,7 @@
 <%= locals.gamesList[key] %>,
 <% } %>
 <% } %>
+<% if (locals.sessions.length > 0) { %>
 <h4>Latest sessions</h4>
 <ul class="list-group">
     <% for(var i=0; i < 4; i++){ %>
@@ -25,6 +26,7 @@
       </li>
     <% } %>
   </ul>
+<% } %>
 <% if (user.name === userEdit.name) { %>
 <a href="/edituser/<%= userEdit._id %>">Edit</a>
 <a href="/deleteuser/<%= user._id %>">Delete</a>
