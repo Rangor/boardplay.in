@@ -1,6 +1,3 @@
-/**
- * Module dependencies.
- */
 
 var express = require('express');
 var hash = require('./pass').hash;
@@ -10,25 +7,18 @@ var Game = require("./models").Game;
 var Session = require("./models").Session;
 var User = require("./models").User;
 var md5 = require('MD5');
+var http = require ('http');            
+var mongoose = require ("mongoose"); 
 
-var http = require ('http');             // For serving a basic web page.
-var mongoose = require ("mongoose"); // The reason for this demo.
-
-// Here we find an appropriate database to connect to, defaulting to
-// localhost if we don't find one.
 var uristring =
 process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||
 'mongodb://localhost/test';
 
-// The http server will listen to an appropriate port, or default to
-// port 5000.
 var theport = process.env.PORT || 5000;
 
 var oneDay = 86400000;
 
-// Makes connection asynchronously.  Mongoose will queue up database
-// operations and release them when the connection is complete.
 mongoose.connect(uristring, function (err, res) {
   if (err) {
   console.log ('ERROR connecting to: ' + uristring + '. ' + err);
@@ -249,6 +239,35 @@ app.post('/newuser', function(req, res){
 
         });
       }
+});
+
+app.get('/resetpassword', function(req, res){
+        res.locals.user = req.session.user;
+        res.render('resetpassword');
+});
+
+app.post('/resetpassword', function(req, res){
+        console.log("resetting password");
+        var secretKey = req.param("secretkey");
+        console.log(req.param("userid"));
+        if(secretKey != "oihfdsgpiougaddlkhjasd"){
+          res.redirect('/');
+        }else{
+          var selectedId = req.param("userid");
+          var query = User.findOne({ '_id': selectedId });
+          query.select('password salt');
+          query.exec(function (err, user) {
+            hash(req.param("password"), function(err, salt, hash){
+              user.salt = salt;
+              user.password = hash;
+              user.save(function () {
+                console.log("Password was reset");
+                res.redirect('/login');
+              });
+              
+            })
+          })
+        }
 });
 
 app.get('/session/:id', restrict,function(req, res){
