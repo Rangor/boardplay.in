@@ -247,27 +247,27 @@ app.get('/resetpassword', function(req, res){
 });
 
 app.post('/resetpassword', function(req, res){
-        console.log("resetting password");
-        var secretKey = req.param("secretkey");
-        console.log(req.param("userid"));
-        if(secretKey != "oihfdsgpiougaddlkhjasd"){
-          res.redirect('/');
-        }else{
-          var selectedId = req.param("userid");
-          var query = User.findOne({ '_id': selectedId });
-          query.select('password salt');
-          query.exec(function (err, user) {
-            hash(req.param("password"), function(err, salt, hash){
-              user.salt = salt;
-              user.password = hash;
-              user.save(function () {
-                console.log("Password was reset");
-                res.redirect('/login');
-              });
+        // console.log("resetting password");
+        // var secretKey = req.param("secretkey");
+        // console.log(req.param("userid"));
+        // if(secretKey != "oihfdsgpiougaddlkhjasd"){
+        //   res.redirect('/');
+        // }else{
+        //   var selectedId = req.param("userid");
+        //   var query = User.findOne({ '_id': selectedId });
+        //   query.select('password salt');
+        //   query.exec(function (err, user) {
+        //     hash(req.param("password"), function(err, salt, hash){
+        //       user.salt = salt;
+        //       user.password = hash;
+        //       user.save(function () {
+        //         console.log("Password was reset");
+        //         res.redirect('/login');
+        //       });
               
-            })
-          })
-        }
+        //     })
+        //   })
+        // }
 });
 
 app.get('/session/:id', restrict,function(req, res){
