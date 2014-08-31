@@ -21,7 +21,7 @@
 <ul class="list-group">
     <% for(var i=0; i < locals.sessions.length && i < 4; i++){ %>
       <li class="list-group-item">
-      <b><%= locals.sessions[i].userName %></b> played <b><%= locals.sessions[i].gameName %></b>
+       <b><%= locals.sessions[i].gameName %></b>
        on <a href="/locals.sessions[i]/<%= locals.sessions[i]._id %>"><%= locals.sessions[i].date.getDate() %>/<%= locals.sessions[i].date.getMonth()+1 %>/<%= locals.sessions[i].date.getFullYear() %></a> - <%= locals.sessions[i].summary %>
       </li>
     <% } %>

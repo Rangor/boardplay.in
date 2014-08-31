@@ -2,13 +2,26 @@
 <% include auth_menu %>
 
 <div class="panel panel-default">
- <div class="panel-heading">
-    <h3 class="panel-title"><%= session.userName %> played <%= session.gameName %> on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %></h3>
-  </div>
-  <div class="panel-body">
+    <h3><%= session.userName %> played <%= session.gameName %> on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %></h3>
     <%= session.summary %>
-  </div>
+    <% if (session.otherGamerIds.length > 0) { %>
+    <h4>He was joined by</h4>
+      <ul>
+        <% session.otherGamerUserNames.forEach(function(userName){ %>
+          <li><%= userName %></a></li>
+        <% }) %>
+      </ul>
+    <% } %>
 </div>
+<% if (session.otherGamerIds.indexOf(locals.user._id) === -1 && session.userName != locals.user.name) { %>
+    <p>
+        <h4>Did you also play at this session?</h4>
+        <form name="input" action="/addUserToSession/<%= session._id %>" method="post">
+        <input type="hidden" value="<%= locals.user._id %>" name="newUserId">
+        <input type="hidden" value="<%= locals.user.name %>" name="newUserName">
+        <input type="submit" value="I also played at this session">
+    </p>
+<% } %>
 
 
     <div id="disqus_thread"></div>

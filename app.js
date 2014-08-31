@@ -275,12 +275,39 @@ app.get('/session/:id', restrict,function(req, res){
       var selectedId = req.param("id");
 
       var query = Session.findOne({ '_id': selectedId });
-      query.select('gameName date userName summary');
+      query.select('gameName date userName summary otherGamerIds otherGamerUserNames');
       query.exec(function (err, session) {
         if (err) return handleError(err);
           res.locals.session = session;
           res.locals.user = req.session.user;
           res.render('session');
+      })
+});
+
+app.post('/addUserToSession/:id', restrict, function(req, res){
+      var selectedId = req.param("id");
+      var newUserId = req.param("newUserId");
+      var newUserName = req.param("newUserName");
+
+      var query = Session.findOne({ '_id': selectedId });
+      query.select('gameName date userName summary otherGamerIds otherGamerUserNames');
+      query.exec(function (err, session) {
+        if (err) return handleError(err);
+          if(session.otherGamerIds){
+
+          }else{
+            var otherGamerIds = [];
+            session.otherGamerIds = otherGamerIds;
+            var otherGamerUserNames = [];
+            session.otherGamerUserNames = otherGamerUserNames;
+          }
+          session.otherGamerIds.push(newUserId);
+          session.otherGamerUserNames.push(newUserName);
+          session.save(function (err){
+              res.locals.session = session;
+              res.locals.user = req.session.user;
+              res.render('session');
+          })
       })
 });
 
@@ -348,27 +375,32 @@ app.post('/editgame', restrict,function(req, res){
 });
 
 app.get('/user/:id', restrict,function(req, res){
-
       var selectedId = req.param("id");
-
       var query = User.findOne({ '_id': selectedId });
       query.select('name bggLink email gravatarHash');
       query.exec(function (err, user) {
-        var sessionQuery = Session.find().where('userName').equals(user.name);
+        //var sessionQuery = Session.find().where('userName').equals(user.name);
+        var sessionQuery = Session.find({userName : user.name});
         sessionQuery.select('gameName userName date summary');
         sessionQuery.sort('-date');
         sessionQuery.exec(function (err, sessions){
           if (err) return handleError(err);
-           var gamesDict = {};
-           for(i = 0; i < sessions.length; i++){
-              gamesDict[sessions[i].gameName] = sessions[i].gameName;
-           }
-           res.locals.userEdit = user;
-           res.locals.user = req.session.user;
-           res.locals.numberOfSessions = sessions.length;
-           res.locals.gamesList = gamesDict;
-           res.locals.sessions = sessions;
-           res.render('user');
+          var sessionQueryOther = Session.find({otherGamerUserNames : user.name});
+          sessionQueryOther.select('gameName userName date summary');
+          sessionQueryOther.sort('-date');
+          sessionQueryOther.exec(function (err, sessionsOther){
+             sessions.push.apply(sessions, sessionsOther);
+             var gamesDict = {};
+             for(i = 0; i < sessions.length; i++){
+                gamesDict[sessions[i].gameName] = sessions[i].gameName;
+             }
+             res.locals.userEdit = user;
+             res.locals.user = req.session.user;
+             res.locals.numberOfSessions = sessions.length;
+             res.locals.gamesList = gamesDict;
+             res.locals.sessions = sessions;
+             res.render('user');
+          })
         })
       })
 });
