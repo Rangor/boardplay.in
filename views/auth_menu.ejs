@@ -1,13 +1,14 @@
-<div class="container">
-<h1 class="title_header">Boardplay.in</h1>
 <% if (locals.user) { %>
-          <ul>
-            <li class="main_menu"><a href="/games">Games</a></li>
-            <li class="main_menu"><a href="/sessions">Sessions</a></li>
-            <li class="main_menu"><a href="/logsession">Log a new session</a></li>
-
-            <li class="main_menu"><a href="/user/<%= user._id %>">Profile</a></li>
-            <li class="main_menu"><a href="/logout">Logout</a></li>
+<div class="menu_divider">
+          <ul class="main_menu">
+            <li class="main_menu"><a class="menu" href="/">Boardplay.in</a></li>
+            <li class="main_menu"><a class="menu" href="/games">Games</a></li>
+            <li class="main_menu"><a class="menu" href="/sessions">Sessions</a></li>
+            <li class="main_menu"><a class="menu" href="/logsession">Log a new session</a></li>
+            <li class="main_menu"><a class="menu" href="/user/<%= user._id %>">Profile</a></li>
+            <li class="main_menu"><a class="menu" href="/logout">Logout</a></li>
           </ul>
-
+</div>
 <% } %>
+
+<div class="content">

@@ -1,18 +1,58 @@
-.title_header{
-	color: red
+body, html{
+	background: white;
+	margin: 0px;
+	padding: 0px;
 }
+
+.content{
+	padding-top: 30px;
+	padding-left: 20px;
+}
+
+.title_header{
+	color: #680000 
+}
+
 .main_menu{
-	position: relative;
-	color:red ;
+	color:white ;
 	font-size: 100%;
 	display: block;
 	float: left;
-	box-sizing: border-box;
-	padding: 20px 35px;
-
+	padding: 10px 20px;
+	margin: 0px;
+	background: black;
 }
 
-a:visited {
-	color: black;
+.menu_divider{
+	margin: 0px;
+	background: black;
+	width: 100%;
+	height: 60px;
 }
+
+li.session-item{
+	width: 500px;
+	height: 60px;
+	padding-top: 10px;
+	border-bottom: solid 1px #C8C8C8;
+	display: block;
+}
+
+li.session-item:first-child{
+	width: 500px;
+	border-top: solid 1px #C8C8C8;
+	display: block;
+}
+
+a.menu{
+	color:white;
+}
+
+a {
+	color:black;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+
 
