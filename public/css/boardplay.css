@@ -1,16 +1,18 @@
-body {
-  padding-top: 60px;
+.title_header{
+	color: red
 }
-.starter-template {
-  padding: 40px 15px;
-  text-align: center;
+.main_menu{
+	position: relative;
+	color:red ;
+	font-size: 100%;
+	display: block;
+	float: left;
+	box-sizing: border-box;
+	padding: 20px 35px;
+
 }
 
-.big_number {
-  font-size: 150%;
+a:visited {
+	color: black;
 }
 
-.tools {
-   padding-top: 40px;
-  font-size: 110%;
-}
