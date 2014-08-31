@@ -156,7 +156,7 @@ function getLatestGamesAndSessions(fn){
         }
       }
       sessions.sort(function(a,b) { return b.date - a.date } );
-      while(sessions.length > 5){
+      while(sessions.length > 6){
         sessions.pop();
       }
       return fn(games, sessions);

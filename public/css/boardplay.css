@@ -2,6 +2,7 @@ body, html{
 	background: white;
 	margin: 0px;
 	padding: 0px;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 .content{
@@ -20,29 +21,41 @@ body, html{
 	float: left;
 	padding: 10px 20px;
 	margin: 0px;
-	background: black;
 }
 
 .menu_divider{
 	margin: 0px;
 	background: black;
 	width: 100%;
-	height: 60px;
+	height: 65px;
 }
 
 li.session-item{
+	list-style-type: none;
+    margin-left:0px;
+    padding-left:0px;
 	width: 500px;
-	height: 60px;
+	height: 55px;
+	background: #E8E8E8;
 	padding-top: 10px;
-	border-bottom: solid 1px #C8C8C8;
-	display: block;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-li.session-item:first-child{
-	width: 500px;
-	border-top: solid 1px #C8C8C8;
-	display: block;
+li.session-item p,h3 {
+	text-align: left;
+	margin-top: -2px;
 }
+
+li.session-item img
+{
+	float:left;
+	padding-right: 8px;
+	padding-left: 8px;
+}
+
+
 
 a.menu{
 	color:white;

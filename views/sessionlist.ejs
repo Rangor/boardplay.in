@@ -3,8 +3,10 @@
     <% sessions.forEach(function(session){ %>
       <li class="session-item">
       <img width="40" src="http://www.gravatar.com/avatar/<%= session.gravatarHash %>" /> 
+      <p>
       <b><%= session.userName %></b> played <b><%= session.gameName %></b>
-       on <a href="/session/<%= session._id %>"><%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %></a> - <%= session.summary %>
+       on <a href="/session/<%= session._id %>"><%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %></a>
+       </p>
       </li>
     <% }) %>
   </ul>
