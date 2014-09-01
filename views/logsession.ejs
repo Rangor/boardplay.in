@@ -14,22 +14,6 @@ Summary (optional)<br><textarea rows="4" cols="30" name="summary"></textarea>
 <input type="submit" value="Submit">
 </form>
 <script>
-$(document).ready( function() {
-    var now = new Date();
- 
-    var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
-    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
-
-
-   $('#datePicker').val(today);
-    
-    $('#test').click(function(){
-        
-        testClicked();
-        
-    });
-});
+document.getElementById('datePicker').valueAsDate = new Date();
 </script>
 <% include foot %>
