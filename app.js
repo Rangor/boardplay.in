@@ -374,9 +374,9 @@ app.post('/editgame', restrict,function(req, res){
     }); 
 });
 
-app.get('/user/:id', restrict,function(req, res){
-      var selectedId = req.param("id");
-      var query = User.findOne({ '_id': selectedId });
+app.get('/user/:name', restrict,function(req, res){
+      var selectedUserName = req.param("name");
+      var query = User.findOne({ 'name': selectedUserName });
       query.select('name bggLink email gravatarHash');
       query.exec(function (err, user) {
         //var sessionQuery = Session.find().where('userName').equals(user.name);

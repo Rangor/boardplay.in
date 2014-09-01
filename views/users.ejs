@@ -5,7 +5,7 @@
 <h3>Users</h3>
   <ul>
     <% users.forEach(function(usr){ %>
-      <a href="/user/<%= usr._id %>"><li><%= usr.name %></a></li>
+      <a href="/user/<%= usr.name %>"><li><%= usr.name %></a></li>
     <% }) %>
   </ul>
 <% } %>
