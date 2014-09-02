@@ -9,7 +9,7 @@
       <a href="/session/<%= sessions[i]._id %>"><%= sessions[i].gameName %></a>
       <% for(p = i+1; p < sessions.length; p++){ %>
         <% if (sessions[i].userName === sessions[p].userName && sessions[i].date.getDate() === sessions[p].date.getDate()) { %>
-            <a href="/session/<%= sessions[p]._id %>"><%= sessions[p].gameName %></a>
+            , <a href="/session/<%= sessions[p]._id %>"><%= sessions[p].gameName %></a>
             <% sessions[p].userName = "";%>
         <%}%>
       <% } %>
