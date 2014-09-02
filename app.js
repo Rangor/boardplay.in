@@ -139,26 +139,26 @@ function getLatestGamesAndSessions(fn){
     query.select('userName gameName date summary gravatarHash');
     query.exec(function (err, sessions) {
     if (err) return console.error(err);
-      for(i = 0; i < sessions.length; i++){
-        var next = +i + +1;
-        if(next < sessions.length){
-          if(sessions[i].userName === sessions[next].userName && sessions[i].date.getDate() === sessions[next].date.getDate()){
-             sessions[next].gameName = sessions[next].gameName+", "+sessions[i].gameName;
-             sessions[next].summary = "";
-             if(i > 0){
-               var tempSession = sessions[0];
-               sessions[0] = sessions[i];
-               sessions[i]  = tempSession;
-               i = -1;
-             }
-             sessions.shift();   
-          }
-        }
-      }
-      sessions.sort(function(a,b) { return b.date - a.date } );
-      while(sessions.length > 6){
-        sessions.pop();
-      }
+      // for(i = 0; i < sessions.length; i++){
+      //   var next = +i + +1;
+      //   if(next < sessions.length){
+      //     if(sessions[i].userName === sessions[next].userName && sessions[i].date.getDate() === sessions[next].date.getDate()){
+      //        sessions[next].gameName = sessions[next].gameName+", "+sessions[i].gameName;
+      //        sessions[next].summary = "";
+      //        if(i > 0){
+      //          var tempSession = sessions[0];
+      //          sessions[0] = sessions[i];
+      //          sessions[i]  = tempSession;
+      //          i = -1;
+      //        }
+      //        sessions.shift();   
+      //     }
+      //   }
+      // }
+      // sessions.sort(function(a,b) { return b.date - a.date } );
+      // while(sessions.length > 6){
+      //   sessions.pop();
+      // }
       return fn(games, sessions);
     });
   });

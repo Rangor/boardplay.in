@@ -1,13 +1,22 @@
 <% if (sessions) { %>
   <ul class="list-group">
-    <% sessions.forEach(function(session){ %>
+    <% for(i = 0; i < sessions.length && i < 15; i++){ %>
+      <% if (sessions[i].userName != "") { %>
       <li class="session-item">
-      <a href="/user/<%= session.userName %>"><img width="40" src="http://www.gravatar.com/avatar/<%= session.gravatarHash %>" /></a>
+      <a href="/user/<%= sessions[i].userName %>"><img width="40" src="http://www.gravatar.com/avatar/<%= sessions[i].gravatarHash %>" /></a>
       <p>
-      <a href="/user/<%= session.userName %>"><%= session.userName %></a> played <a href="/session/<%= session._id %>"><%= session.gameName %></a>
-       on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>
+      <a href="/user/<%= sessions[i].userName %>"><%= sessions[i].userName %></a> played 
+      <a href="/session/<%= sessions[i]._id %>"><%= sessions[i].gameName %></a>
+      <% for(p = i+1; p < sessions.length; p++){ %>
+        <% if (sessions[i].userName === sessions[p].userName && sessions[i].date.getDate() === sessions[p].date.getDate()) { %>
+            <a href="/session/<%= sessions[p]._id %>"><%= sessions[p].gameName %></a>
+            <% sessions[p].userName = "";%>
+        <%}%>
+      <% } %>
+       on <%= sessions[i].date.getDate() %>/<%= sessions[i].date.getMonth()+1 %>
        </p>
       </li>
-    <% }) %>
+    <% } %>
+    <% } %>
   </ul>
 <% } %>
