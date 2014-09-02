@@ -42,7 +42,7 @@ li.session-item{
     padding-left:0px;
 	width: 550px;
 	height: 55px;
-	background: #E8E8E8;
+	background: rgb(190,211,249);
 	padding-top: 10px;
 	display: inline-block;
 	overflow: hidden;
@@ -61,10 +61,38 @@ li.session-item img
 	padding-left: 8px;
 }
 
+ul.hasplayed{
+	max-width: 700px;
+}
 
+li.hasplayed-item{
+	list-style-type: none;
+    margin-left:0px;
+    padding-left:0px;
+	width: 200px;
+	height: 35px;
+	background: rgb(141,176,237);
+	padding-top: 10px;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+li.hasplayed-item p {
+	text-align: center;
+	margin-top: 0px;
+}
 
 a.menu{
 	color:white;
+}
+
+a.newsession{
+	font-weight: normal;
+	background-color: #18ab29;
+	border : 1px solid #18ab29;
+	border-radius: 5px;
+	padding: 2px 5px;
 }
 
 a {

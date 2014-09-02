@@ -5,12 +5,18 @@
 Game name:<br>
 <select name="gamespicker">
 <% games.forEach(function(game){ %>
-  <option name="<%= game.name %>" value="<%= game._id %>,<%= game.name %>"><%= game.name %></option>
+	<% if (locals.selectedGameId){ %>
+		<% if(game._id.equals(locals.selectedGameId)){ %>
+			<option selected="selected" name="<%= game.name %>" value="<%= game._id %>,<%= game.name %>"><%= game.name %></option>
+		<% } %>
+	<%}else{%>
+  		<option name="<%= game.name %>" value="<%= game._id %>,<%= game.name %>"><%= game.name %></option>
+  	<% } %>
 <% }) %>
 </select>
 <br>
 Date:<br><input id="datePicker" type="date" name="date"><br>
-Summary (optional)<br><textarea rows="4" cols="30" name="summary"></textarea>
+Summary (optional)<br><textarea rows="5" cols="50" name="summary"></textarea><br>
 <input type="submit" value="Submit">
 </form>
 <script>

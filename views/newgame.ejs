@@ -1,15 +1,15 @@
 <% include head %>
 <% include auth_menu %>
-<br>
 <h3>New Game</h3>
 <form name="input" action="/newgame" method="post">
+Game name (requried)<br>
+<input type="text" name="name" required="true"><br>
 
-Game name: (requried)<input type="text" name="name" required="true"><br>
+Board Game Geek link (optional)<br>
+<input type="url" name="bggLink" ><br>
 
-Board Game Geek link: (optional)<input type="url" name="bggLink" ><br>
-
-Description (optional)<br><textarea rows="4" cols="30" name="description"></textarea>
-
+Description (optional)<br>
+<textarea rows="5" cols="50" name="description"></textarea><br>
 <input type="submit" value="Submit">
 </form>
 

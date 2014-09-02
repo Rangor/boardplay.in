@@ -12,10 +12,12 @@
 
 <% if (locals.gamesList) { %>
 <h4>Games played</h4>
+<ul class="hasplayed">
 <% for(var key in locals.gamesList){ %>
-<%= locals.gamesList[key] %>,
+<li class="hasplayed-item"><p><%= locals.gamesList[key] %></p></li>
 <% } %>
 <% } %>
+</ul>
 <% if (locals.sessions.length > 0) { %>
 <h4>Latest sessions</h4>
 <ul class="list-group">

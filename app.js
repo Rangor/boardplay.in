@@ -172,6 +172,15 @@ app.post('/newgame', restrict,function(req, res){
         });
 });
 
+app.get('/logsession/:gameId', restrict,function(req, res){
+        res.locals.user = req.session.user;
+        getAllGames(function(data){
+          res.locals.games = data;
+          res.locals.selectedGameId = req.param("gameId");
+          res.render('logsession');
+        });
+});
+
 app.get('/logsession', restrict,function(req, res){
         res.locals.user = req.session.user;
         getAllGames(function(data){
@@ -361,18 +370,18 @@ app.get('/user/:name', restrict,function(req, res){
       query.exec(function (err, user) {
         //var sessionQuery = Session.find().where('userName').equals(user.name);
         var sessionQuery = Session.find({userName : user.name});
-        sessionQuery.select('gameName userName date summary');
+        sessionQuery.select('gameName userName date summary gameId');
         sessionQuery.sort('-date');
         sessionQuery.exec(function (err, sessions){
           if (err) return handleError(err);
           var sessionQueryOther = Session.find({otherGamerUserNames : user.name});
-          sessionQueryOther.select('gameName userName date summary');
+          sessionQueryOther.select('gameName userName date summary gameId');
           sessionQueryOther.sort('-date');
           sessionQueryOther.exec(function (err, sessionsOther){
              sessions.push.apply(sessions, sessionsOther);
              var gamesDict = {};
              for(i = 0; i < sessions.length; i++){
-                gamesDict[sessions[i].gameName] = sessions[i].gameName;
+                gamesDict[sessions[i].gameId] = sessions[i].gameName;
              }
              res.locals.userEdit = user;
              res.locals.user = req.session.user;
