@@ -102,7 +102,9 @@ app.get('/', restrict, function(req, res){
 });
 
 app.get('/games', restrict,function(req, res){
-      Game.find(function (err, data) {
+      query = Game.find();
+      query.sort("name");
+      query.exec(function (err, data) {
       if (err) return console.error(err);
         res.locals.games = data;
         res.locals.user = req.session.user;
@@ -128,7 +130,7 @@ function getAllGames(fn){
 
 function getLatestGamesAndSessions(fn){
   var query = Game.find();
-  query.limit(5);
+  query.limit(6);
   query.sort('-_id');
   query.select('_id name bggLink description');
   query.exec(function (err, games) {

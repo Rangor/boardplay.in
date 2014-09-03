@@ -1,7 +1,7 @@
 <% if (games) { %>
-  <ul>
+  <ul class="gamelist">
     <% games.forEach(function(game){ %>
-      <a href="/game/<%= game._id %>"><li><%= game.name %></a></li>
+      <li class="gamelist-item"><div class="gamelist-link"><a href="/game/<%= game._id %>"><%= game.name %></a></div></li>
     <% }) %>
   </ul>
 <% } %>

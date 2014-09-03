@@ -14,17 +14,17 @@
 <h4>Games played</h4>
 <ul class="hasplayed">
 <% for(var key in locals.gamesList){ %>
-<li class="hasplayed-item"><p><%= locals.gamesList[key] %></p></li>
+<li class="hasplayed-item"><div class="hasplayed-link"><a href="/game/<%= key %>"><%= locals.gamesList[key] %></a></div></li>
 <% } %>
 <% } %>
 </ul>
 <% if (locals.sessions.length > 0) { %>
 <h4>Latest sessions</h4>
-<ul class="list-group">
+<ul>
     <% for(var i=0; i < locals.sessions.length && i < 4; i++){ %>
-      <li class="list-group-item">
-       <b><%= locals.sessions[i].gameName %></b>
-       on <a href="/locals.sessions[i]/<%= locals.sessions[i]._id %>"><%= locals.sessions[i].date.getDate() %>/<%= locals.sessions[i].date.getMonth()+1 %>/<%= locals.sessions[i].date.getFullYear() %></a> - <%= locals.sessions[i].summary %>
+      <li>
+       <a href="/session/<%= locals.sessions[i]._id %>"><%= locals.sessions[i].gameName %></a>
+       on <%= locals.sessions[i].date.getDate() %>/<%= locals.sessions[i].date.getMonth()+1 %>/<%= locals.sessions[i].date.getFullYear() %> - <%= locals.sessions[i].summary %>
       </li>
     <% } %>
   </ul>

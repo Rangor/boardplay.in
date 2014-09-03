@@ -36,12 +36,16 @@ ul.main_menu{
 	height: 65px;
 }
 
+ul.latest-sessions{
+	max-width: 800px;
+}
+
 li.session-item{
 	list-style-type: none;
     margin-left:0px;
     padding-left:0px;
-	width: 550px;
-	height: 55px;
+	width: 350px;
+	height: 85px;
 	background: rgb(190,211,249);
 	padding-top: 10px;
 	display: inline-block;
@@ -78,9 +82,39 @@ li.hasplayed-item{
 	text-overflow: ellipsis;
 }
 
-li.hasplayed-item p {
+li.hasplayed-item p{
 	text-align: center;
 	margin-top: 0px;
+}
+
+.hasplayed-link{
+	text-align: center;
+}
+
+ul.gamelist{
+	max-width: 700px;
+}
+
+li.gamelist-item{
+	list-style-type: none;
+    margin-left:0px;
+    padding-left:0px;
+	width: 200px;
+	height: 50px;
+	background: rgb(141,176,237);
+	padding-top: 10px;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+li.gamelist-item p{
+	text-align: center;
+	margin-top: 0px;
+}
+
+.gamelist-link{
+	text-align: center;
 }
 
 a.menu{
