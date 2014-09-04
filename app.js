@@ -478,6 +478,13 @@ app.post('/login', function(req, res){
   });
 });
 
+app.get('/api/games', function(req, res){
+  Game.find(function(err, games){
+    res.setHeader('Content-Type', 'application/json');
+    res.json(games);
+  })
+});
+
 if (!module.parent) {
   var port = Number(process.env.PORT || 5000);
   app.listen(port, function() {
