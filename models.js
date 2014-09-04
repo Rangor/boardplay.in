@@ -34,7 +34,8 @@ var userSchema = mongoose.Schema({
     email: String,
     displayName: String,
     gplus: String,
-    gravatarHash: String
+    gravatarHash: String,
+    apiKey: String
 })
 
 var Game = mongoose.model('Game', gameSchema);

@@ -67,7 +67,7 @@ app.use(function(req, res, next){
 
 function authenticate(name, pass, fn) {
   var query = User.findOne({ 'name': name });
-  query.select('name password salt gravatarHash');//Todo something went wrong on the server here, salt was null or something
+  query.select('name password salt gravatarHash apiKey');//Todo something went wrong on the server here, salt was null or something
   query.exec(function (err, user) {
       if (err) return handleError(err);
 
@@ -88,6 +88,15 @@ function restrict(req, res, next) {
   } else {
     res.redirect('/login');
   }
+}
+
+function apiRestrict(req, res, next){
+  var query = User.findOne({'apiKey':req.param("apikey")});
+  query.exec(function(err, user){
+      if(user){
+        next();
+      }
+  })
 }
 
 app.get('/', restrict, function(req, res){
@@ -478,10 +487,39 @@ app.post('/login', function(req, res){
   });
 });
 
-app.get('/api/games', function(req, res){
+app.post('/api/apikey', function(req, res){
+    authenticate(req.body.username, req.body.password, function(err, user){
+      if(user){
+        hash("apikeyseed", function(err, salt, hash){         
+          user.apiKey = hash.substring(1,20);
+          user.save(function () {
+              var apiKeyDict = {};
+              apiKeyDict["apiKey"] = user.apiKey;
+              res.json(apiKeyDict);
+          })
+        })
+      }
+    });
+});
+
+app.get('/api/games/:apikey', apiRestrict, function(req, res){
   Game.find(function(err, games){
     res.setHeader('Content-Type', 'application/json');
     res.json(games);
+  })
+});
+
+app.get('/api/sessions/:apikey', apiRestrict, function(req, res){
+  Session.find(function(err, sessions){
+    res.setHeader('Content-Type', 'application/json');
+    res.json(sessions);
+  })
+});
+
+app.get('/api/usersessions/:apikey', apiRestrict, function(req, res){
+  Session.find(function(err, sessions){
+    res.setHeader('Content-Type', 'application/json');
+    res.json(sessions);
   })
 });
 
