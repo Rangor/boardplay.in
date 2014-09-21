@@ -11,7 +11,7 @@ var http = require ('http');
 var mongoose = require ("mongoose"); 
 
 //My modules
-var game = require('./game.js');
+//var game = require('./game.js');
 
 var uristring =
 process.env.MONGOLAB_URI ||
