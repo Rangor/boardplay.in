@@ -10,6 +10,9 @@ var md5 = require('MD5');
 var http = require ('http');            
 var mongoose = require ("mongoose"); 
 
+//My modules
+var game = require('./game.js');
+
 var uristring =
 process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||
@@ -131,7 +134,9 @@ app.get('/users', restrict,function(req, res){
 });
 
 function getAllGames(fn){
-  Game.find(function (err, data) {
+  var query = Game.find();
+  query.sort("name");
+  query.exec(function (err, data) {
   if (err) return console.error(err);
     return fn(data);
   });
@@ -522,6 +527,8 @@ app.get('/api/usersessions/:apikey', apiRestrict, function(req, res){
     res.json(sessions);
   })
 });
+
+
 
 if (!module.parent) {
   var port = Number(process.env.PORT || 5000);
