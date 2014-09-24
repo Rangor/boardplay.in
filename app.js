@@ -316,6 +316,33 @@ app.post('/addUserToSession/:id', restrict, function(req, res){
       })
 });
 
+app.post('/removeUserFromSession/:id', restrict, function(req, res){
+      var selectedId = req.param("id");
+      var newUserId = req.param("newUserId");
+      var newUserName = req.param("newUserName");
+
+      var query = Session.findOne({ '_id': selectedId });
+      query.select('gameName date userName summary otherGamerIds otherGamerUserNames');
+      query.exec(function (err, session) {
+        if (err) return handleError(err);
+          var idPosition = session.otherGamerIds.indexOf(newUserId);
+          session.otherGamerIds[idPosition] = "";
+          session.otherGamerIds.sort();
+          session.otherGamerIds.shift();
+
+          var namePosition = session.otherGamerUserNames.indexOf(newUserName);
+          session.otherGamerUserNames[namePosition] = "";
+          session.otherGamerUserNames.sort();
+          session.otherGamerUserNames.shift();
+
+          session.save(function (err){
+              res.locals.session = session;
+              res.locals.user = req.session.user;
+              res.render('session');
+          })
+      })
+});
+
 app.get('/deletesession/:id', restrict,function(req, res){
       var selectedId = req.param("id");
       var query = Session.findOne({ '_id': selectedId });

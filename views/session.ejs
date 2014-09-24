@@ -8,7 +8,16 @@
     <h4>He was joined by</h4>
       <ul>
         <% session.otherGamerUserNames.forEach(function(userName){ %>
-          <li><%= userName %></a></li>
+          <li>
+                <%= userName %></a>  
+                <% if(userName == user.name){ %>
+                            <form name="input" action="/removeUserFromSession/<%= session._id %>" method="post">
+                            <input type="hidden" value="<%= locals.user._id %>" name="newUserId">
+                            <input type="hidden" value="<%= locals.user.name %>" name="newUserName">
+                            <input type="submit" value=" Remove me from this session">
+                <% } %> 
+
+          </li>
         <% }) %>
       </ul>
     <% } %>
