@@ -12,6 +12,15 @@ body, html{
 	padding-left: 20px;
 }
 
+.footer{
+	padding-top: 30px;
+	padding-left: 20px;
+}
+
+.hint{
+	padding-top: 50px;
+}
+
 .title_header{
 	color: #680000 
 }

@@ -112,8 +112,11 @@ app.get('/', restrict, function(req, res){
     res.locals.games = games;
     res.render('main');
   })
+});
 
-
+app.get('/about', restrict, function(req, res){
+  res.locals.user = req.session.user;
+    res.render('about');
 });
 
 app.get('/games', restrict,function(req, res){
