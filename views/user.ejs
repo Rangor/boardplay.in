@@ -1,14 +1,28 @@
 <% include head %>
 <% include auth_menu %>
-        <h3><%= userEdit.name %></h3>
-      <% if (userEdit.gravatarHash) { %>
-		<img src="http://www.gravatar.com/avatar/<%= userEdit.gravatarHash %>" />
-		<% } %>
+
+<% if (userEdit.displayName) { %>
+<b><%= userEdit.displayName %></b>
+<% } else { %>
+<b><%= userEdit.name %></b>
+<% } %>
+<br>
+<% if (userEdit.gravatarHash) { %>
+<img src="http://www.gravatar.com/avatar/<%= userEdit.gravatarHash %>" />
+<% } %>
+<br>
 <% if (locals.numberOfSessions) { %>
-<h4>Number of sessions</h4> 
+<b>Number of sessions:</b> 
 <%= locals.numberOfSessions %>
 <% } %>
-
+<br>
+<% if (userEdit.bggLink) { %>
+<a href="<%= userEdit.bggLink %>">Boardgame Geek Link</a>
+<% } %>
+<br>
+<% if (userEdit.bgLink) { %>
+<a href="<%= userEdit.bgLink %>">Boardgaming Link</a>
+<% } %>
 
 <% if (locals.gamesList) { %>
 <h4>Games played</h4>
@@ -21,13 +35,13 @@
 <% if (locals.sessions.length > 0) { %>
 <h4>Latest sessions</h4>
 <ul>
-    <% for(var i=0; i < locals.sessions.length && i < 4; i++){ %>
-      <li>
-       <a href="/session/<%= locals.sessions[i]._id %>"><%= locals.sessions[i].gameName %></a>
-       on <%= locals.sessions[i].date.getDate() %>/<%= locals.sessions[i].date.getMonth()+1 %>/<%= locals.sessions[i].date.getFullYear() %> - <%= locals.sessions[i].summary %>
-      </li>
-    <% } %>
-  </ul>
+<% for(var i=0; i < locals.sessions.length && i < 4; i++){ %>
+<li>
+<a href="/session/<%= locals.sessions[i]._id %>"><%= locals.sessions[i].gameName %></a>
+on <%= locals.sessions[i].date.getDate() %>/<%= locals.sessions[i].date.getMonth()+1 %>/<%= locals.sessions[i].date.getFullYear() %> - <%= locals.sessions[i].summary %>
+</li>
+<% } %>
+</ul>
 <% } %>
 <% if (user.name === userEdit.name) { %>
 <a href="/edituser/<%= userEdit._id %>">Edit</a>

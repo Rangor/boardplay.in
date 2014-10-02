@@ -412,7 +412,7 @@ app.post('/editgame', restrict,function(req, res){
 app.get('/user/:name', restrict,function(req, res){
   var selectedUserName = req.param("name");
   var query = User.findOne({ 'name': selectedUserName });
-  query.select('name displayName bggLink email gravatarHash');
+  query.select('name displayName bgLink bggLink email gravatarHash');
   query.exec(function (err, user) {
         //var sessionQuery = Session.find().where('userName').equals(user.name);
         var sessionQuery = Session.find({userName : user.name});
@@ -457,7 +457,7 @@ app.get('/deleteuser/:id', restrict,function(req, res){
 app.get('/edituser/:id', restrict,function(req, res){
   var selectedId = req.param("id");
   var query = User.findOne({ '_id': selectedId });
-  query.select('name displayName bggLink email');
+  query.select('name displayName bgLink bggLink email');
   query.exec(function (err, user) {
     if (err) return handleError(err);
     res.locals.userEdit = user;
@@ -472,6 +472,7 @@ app.post('/edituser', restrict,function(req, res){
     if (err) return handleError(err);
     user.displayName = req.param("displayName");
     user.bggLink = req.param("bggLink");
+    user.bgLink = req.param("bgLink");
     user.email = req.param("email");
     var gravatar = md5(user.email);
     if(gravatar != user.gravatarHash){
