@@ -1,11 +1,9 @@
 body, html{
-	background: white;
 	margin: 0px;
 	padding: 0px;
 	font-family: 'Open Sans', sans-serif;
 	-webkit-font-smoothing:subpixel-antialiased;
 	font-weight:normal;
-	background: AntiqueWhite;
 }
 
 img.profile{
@@ -69,16 +67,15 @@ ul.latest-sessions{
 
 li.session-item{
 	list-style-type: none;
-    margin-left:0px;
-    padding-left:0px;
 	width: 350px;
 	height: 85px;
 	border-radius: 5px;
-	background: darksalmon;
+	background: silver;
 	padding-top: 10px;
 	display: inline-block;
 	overflow: hidden;
-	text-overflow: ellipsis;
+	vertical-align: top;
+	margin-bottom: 5px;
 }
 
 li.session-item p {
@@ -106,12 +103,14 @@ li.hasplayed-item{
     padding-left:0px;
 	width: 200px;
 	height: 50px;
-	background: coral;
+	background: silver;
+	margin-bottom: 5px;
 	padding-top: 10px;
 	border-radius: 5px;
 	display: inline-block;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	vertical-align: top;
 }
 
 li.hasplayed-item p{
@@ -144,12 +143,14 @@ li.gamelist-item{
     padding-left:0px;
 	width: 200px;
 	height: 50px;
-	background: coral;
+	margin-bottom: 5px;
+	background: silver;
 	padding-top: 10px;
 	border-radius: 5px;
 	display: inline-block;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	vertical-align: top;
 }
 
 li.gamelist-item p{
