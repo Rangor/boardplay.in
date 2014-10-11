@@ -9,10 +9,6 @@ var User = require("./models").User;
 var md5 = require('MD5');
 var http = require ('http');            
 var mongoose = require ("mongoose"); 
-
-//My modules
-//var game = require('./game.js');
-
 var uristring =
 process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||
@@ -105,6 +101,18 @@ function apiRestrict(req, res, next){
   })
 }
 
+function updateSessionsWithGravatarHash(userName, newGravatarHash){
+  var query = Session.find({'userName' : userName});
+  query.select("gravatarHash");
+  query.exec(function(err,sessions){
+    for(i in sessions){
+      sessions[i].gravatarHash = newGravatarHash;
+      sessions[i].save(function(err){
+      });
+    }
+  });
+}
+
 app.get('/', restrict, function(req, res){
   getLatestGamesAndSessions(function (games, sessions) {
     res.locals.sessions = sessions;
@@ -119,26 +127,7 @@ app.get('/about', restrict, function(req, res){
     res.render('about');
 });
 
-app.get('/games', restrict,function(req, res){
-  query = Game.find();
-  query.sort("name");
-  query.exec(function (err, data) {
-    if (err) return console.error(err);
-    res.locals.games = data;
-    res.locals.user = req.session.user;
-    res.render('games');
-  });
-});
-
-app.get('/users', restrict,function(req, res){
-  User.find(function (err, data) {
-    if (err) return console.error(err);
-    res.locals.users = data;
-    res.locals.user = req.session.user;
-    res.render('users');
-  });
-});
-
+//Helper methods
 function getAllGames(fn){
   var query = Game.find();
   query.sort("name");
@@ -150,7 +139,7 @@ function getAllGames(fn){
 
 function getLatestGamesAndSessions(fn){
   var query = Game.find();
-  query.limit(6);
+  query.limit(8);
   query.sort('-_id');
   query.select('_id name bggLink description');
   query.exec(function (err, games) {
@@ -166,15 +155,16 @@ function getLatestGamesAndSessions(fn){
   });
 }
 
-app.get('/sessions', restrict,function(req, res){
-  var query = Session.find();
-  query.sort("-date");
-  query.select('userName gameName date summary gravatarHash _id');
+// Urls
+// Game 
+app.get('/games', restrict,function(req, res){
+  query = Game.find();
+  query.sort("name");
   query.exec(function (err, data) {
     if (err) return console.error(err);
-    res.locals.sessions = data;
+    res.locals.games = data;
     res.locals.user = req.session.user;
-    res.render('sessions');
+    res.render('games');
   });
 });
 
@@ -191,6 +181,54 @@ app.post('/newgame', restrict,function(req, res){
   game.save(function () {
     res.locals.user = req.session.user;
     res.redirect('games');
+  });
+});
+
+//User
+app.get('/users', restrict,function(req, res){
+  User.find(function (err, data) {
+    if (err) return console.error(err);
+    res.locals.users = data;
+    res.locals.user = req.session.user;
+    res.render('users');
+  });
+});
+
+app.get('/newuser', function(req, res){
+  res.locals.user = req.session.user;
+  res.render('newuser');
+});
+
+app.post('/newuser', function(req, res){
+  var user = new User();
+  user.name = req.param("name");
+  if(req.param("invitekey") != "thisismyinvitekey"){
+    res.locals.errormessage = "Wrong invite key";
+    res.render('newuser');
+  }else{
+    hash(req.param("password"), function(err, salt, hash){
+      if (err) throw err;
+      user.salt = salt;
+      user.password = hash;
+
+      user.save(function () {
+        res.redirect('/');
+      });
+
+    });
+  }
+});
+
+//Session
+app.get('/sessions', restrict,function(req, res){
+  var query = Session.find();
+  query.sort("-date");
+  query.select('userName gameName date summary gravatarHash _id');
+  query.exec(function (err, data) {
+    if (err) return console.error(err);
+    res.locals.sessions = data;
+    res.locals.user = req.session.user;
+    res.render('sessions');
   });
 });
 
@@ -227,64 +265,8 @@ app.post('/logsession', restrict,function(req, res){
   });
 });
 
-app.get('/newuser', function(req, res){
-  res.locals.user = req.session.user;
-  res.render('newuser');
-});
-
-app.post('/newuser', function(req, res){
-  var user = new User();
-  user.name = req.param("name");
-  if(req.param("invitekey") != "thisismyinvitekey"){
-    res.locals.errormessage = "Wrong invite key";
-    res.render('newuser');
-  }else{
-    hash(req.param("password"), function(err, salt, hash){
-      if (err) throw err;
-      user.salt = salt;
-      user.password = hash;
-
-      user.save(function () {
-        res.redirect('/');
-      });
-
-    });
-  }
-});
-
-app.get('/resetpassword', function(req, res){
-  res.locals.user = req.session.user;
-  res.render('resetpassword');
-});
-
-app.post('/resetpassword', function(req, res){
-        // console.log("resetting password");
-        // var secretKey = req.param("secretkey");
-        // console.log(req.param("userid"));
-        // if(secretKey != "oihfdsgpiougaddlkhjasd"){
-        //   res.redirect('/');
-        // }else{
-        //   var selectedId = req.param("userid");
-        //   var query = User.findOne({ '_id': selectedId });
-        //   query.select('password salt');
-        //   query.exec(function (err, user) {
-        //     hash(req.param("password"), function(err, salt, hash){
-        //       user.salt = salt;
-        //       user.password = hash;
-        //       user.save(function () {
-        //         console.log("Password was reset");
-        //         res.redirect('/login');
-        //       });
-
-        //     })
-        //   })
-        // }
-      });
-
 app.get('/session/:id', restrict,function(req, res){
-
   var selectedId = req.param("id");
-
   var query = Session.findOne({ '_id': selectedId });
   query.select('gameName date userName summary otherGamerIds otherGamerUserNames');
   query.exec(function (err, session) {
@@ -357,6 +339,39 @@ app.get('/deletesession/:id', restrict,function(req, res){
     res.redirect('/sessions');
   })
 });
+
+//////////////////////////////
+//Password
+//////////////////////////////
+
+app.get('/resetpassword', function(req, res){
+  res.locals.user = req.session.user;
+  res.render('resetpassword');
+});
+
+app.post('/resetpassword', function(req, res){
+        // console.log("resetting password");
+        // var secretKey = req.param("secretkey");
+        // console.log(req.param("userid"));
+        // if(secretKey != "oihfdsgpiougaddlkhjasd"){
+        //   res.redirect('/');
+        // }else{
+        //   var selectedId = req.param("userid");
+        //   var query = User.findOne({ '_id': selectedId });
+        //   query.select('password salt');
+        //   query.exec(function (err, user) {
+        //     hash(req.param("password"), function(err, salt, hash){
+        //       user.salt = salt;
+        //       user.password = hash;
+        //       user.save(function () {
+        //         console.log("Password was reset");
+        //         res.redirect('/login');
+        //       });
+
+        //     })
+        //   })
+        // }
+      });
 
 app.get('/game/:id', restrict,function(req, res){
 
@@ -489,17 +504,9 @@ app.post('/edituser', restrict,function(req, res){
   }); 
 });
 
-function updateSessionsWithGravatarHash(userName, newGravatarHash){
-  var query = Session.find({'userName' : userName});
-  query.select("gravatarHash");
-  query.exec(function(err,sessions){
-    for(i in sessions){
-      sessions[i].gravatarHash = newGravatarHash;
-      sessions[i].save(function(err){
-      });
-    }
-  });
-}
+//////////////////////////////
+// Login
+//////////////////////////////
 
 app.get('/logout', function(req, res){
   req.session.destroy(function(){
@@ -526,6 +533,9 @@ app.post('/login', function(req, res){
   });
 });
 
+//////////////////////////////
+//API
+//////////////////////////////
 app.post('/api/apikey', function(req, res){
   authenticate(req.body.username, req.body.password, function(err, user){
     if(user){
@@ -561,7 +571,6 @@ app.get('/api/usersessions/:apikey', apiRestrict, function(req, res){
     res.json(sessions);
   })
 });
-
 
 
 if (!module.parent) {

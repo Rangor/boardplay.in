@@ -8,7 +8,7 @@
 <% } %>
 <br>
 <% if (userEdit.gravatarHash) { %>
-<img src="http://www.gravatar.com/avatar/<%= userEdit.gravatarHash %>" />
+<img class="profile" src="http://www.gravatar.com/avatar/<%= userEdit.gravatarHash %>" />
 <% } %>
 <br>
 <% if (locals.numberOfSessions) { %>
@@ -34,7 +34,7 @@
 </ul>
 <% if (locals.sessions.length > 0) { %>
 <h4>Latest sessions</h4>
-<ul>
+<ul class="profile">
 <% for(var i=0; i < locals.sessions.length && i < 4; i++){ %>
 <li>
 <a href="/session/<%= locals.sessions[i]._id %>"><%= locals.sessions[i].gameName %></a>

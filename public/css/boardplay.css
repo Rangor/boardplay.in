@@ -5,11 +5,27 @@ body, html{
 	font-family: 'Open Sans', sans-serif;
 	-webkit-font-smoothing:subpixel-antialiased;
 	font-weight:normal;
+	background: AntiqueWhite;
+}
+
+img.profile{
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+}
+
+ul.profile{
+	list-style: inside;
+}
+
+h3{
+	text-align: center;
 }
 
 .content{
 	padding-top: 30px;
-	padding-left: 20px;
+	text-align: center;
+	margin: auto;
 }
 
 .footer{
@@ -25,28 +41,30 @@ body, html{
 	color: #680000 
 }
 
+.menu_container{
+	width: 100%;
+	background:maroon;
+	text-align: center;
+}
+
 .main_menu{
 	color:white ;
 	font-size: 100%;
-	display: block;
-	float: left;
+	display: inline-block;
 	padding: 10px 20px;
-	margin: 0px;
 }
 
-ul.main_menu{
-	min-width: 700px;
-}
-
-.menu_divider{
-	margin: 0px;
-	background: black;
-	width: 100%;
-	height: 65px;
+.changelog{
+	list-style:inside;
 }
 
 ul.latest-sessions{
-	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	max-height: 195px;
+	overflow: hidden;
+
 }
 
 li.session-item{
@@ -55,14 +73,15 @@ li.session-item{
     padding-left:0px;
 	width: 350px;
 	height: 85px;
-	background: rgb(190,211,249);
+	border-radius: 5px;
+	background: darksalmon;
 	padding-top: 10px;
 	display: inline-block;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-li.session-item p,h3 {
+li.session-item p {
 	text-align: left;
 	margin-top: 0px;
 }
@@ -75,7 +94,10 @@ li.session-item img
 }
 
 ul.hasplayed{
-	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	overflow: hidden;
 }
 
 li.hasplayed-item{
@@ -84,8 +106,9 @@ li.hasplayed-item{
     padding-left:0px;
 	width: 200px;
 	height: 50px;
-	background: rgb(141,176,237);
+	background: coral;
 	padding-top: 10px;
+	border-radius: 5px;
 	display: inline-block;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -101,7 +124,18 @@ li.hasplayed-item p{
 }
 
 ul.gamelist{
-	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	overflow: hidden;
+}
+
+ul.latest-gamelist{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	max-height: 125px;
+	overflow: hidden;
 }
 
 li.gamelist-item{
@@ -110,8 +144,9 @@ li.gamelist-item{
     padding-left:0px;
 	width: 200px;
 	height: 50px;
-	background: rgb(141,176,237);
+	background: coral;
 	padding-top: 10px;
+	border-radius: 5px;
 	display: inline-block;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -147,5 +182,7 @@ a {
 .disqus{
 	margin: 50px;
 }
+
+
 
 
