@@ -139,7 +139,7 @@ function getAllGames(fn){
 
 function getLatestGamesAndSessions(fn){
   var query = Game.find();
-  query.limit(8);
+  query.limit(12);
   query.sort('-_id');
   query.select('_id name bggLink description');
   query.exec(function (err, games) {
