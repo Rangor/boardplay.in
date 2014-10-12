@@ -4,6 +4,7 @@ body, html{
 	font-family: 'Open Sans', sans-serif;
 	-webkit-font-smoothing:subpixel-antialiased;
 	font-weight:normal;
+	background: linen;
 }
 
 img.profile{
@@ -70,7 +71,8 @@ li.session-item{
 	width: 350px;
 	height: 85px;
 	border-radius: 5px;
-	background: silver;
+	background: #4354AB;
+	color: white;
 	padding-top: 10px;
 	display: inline-block;
 	overflow: hidden;
@@ -103,7 +105,7 @@ li.hasplayed-item{
     padding-left:0px;
 	width: 200px;
 	height: 50px;
-	background: silver;
+	background: #4354AB;
 	margin-bottom: 5px;
 	padding-top: 10px;
 	border-radius: 5px;
@@ -143,14 +145,27 @@ li.gamelist-item{
     padding-left:0px;
 	width: 200px;
 	height: 50px;
+	color: white;
 	margin-bottom: 5px;
-	background: silver;
+	background: #4354AB;
 	padding-top: 10px;
 	border-radius: 5px;
 	display: inline-block;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	vertical-align: top;
+}
+
+a.session-link{
+	color:white;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a.game-link {
+	color:white;
+	text-decoration: none;
+	font-weight: bold;
 }
 
 li.gamelist-item p{
@@ -175,6 +190,12 @@ a.newsession{
 }
 
 a {
+	color:white;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a.content-link {
 	color:black;
 	text-decoration: none;
 	font-weight: bold;

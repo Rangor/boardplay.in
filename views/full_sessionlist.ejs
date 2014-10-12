@@ -2,9 +2,9 @@
   <ul class="list-group">
     <% sessions.forEach(function(session){ %>
       <li class="session-item">
-      <a href="/user/<%= session.userName %>"><img width="40" src="http://www.gravatar.com/avatar/<%= session.gravatarHash %>" /></a>
+      <a class="session-link" href="/user/<%= session.userName %>"><img width="40" src="http://www.gravatar.com/avatar/<%= session.gravatarHash %>" /></a>
       <p>
-      <a href="/user/<%= session.userName %>"><%= session.userName %></a> played <a href="/session/<%= session._id %>"><%= session.gameName %></a>
+      <a class="session-link" href="/user/<%= session.userName %>"><%= session.userName %></a> played <a class="session-link" href="/session/<%= session._id %>"><%= session.gameName %></a>
        on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %>
        </p>
       </li>

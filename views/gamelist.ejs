@@ -2,7 +2,7 @@
 <div>
   <ul class="latest-gamelist">
     <% games.forEach(function(game){ %>
-      <li class="gamelist-item"><div class="gamelist-link"><a href="/game/<%= game._id %>"><%= game.name %></a></div></li>
+      <li class="gamelist-item"><div class="gamelist-link"><a class="game-link" href="/game/<%= game._id %>"><%= game.name %></a></div></li>
     <% }) %>
   </ul>
   </div>

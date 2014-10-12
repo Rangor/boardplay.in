@@ -16,12 +16,11 @@
 <div class="big_number"><%= locals.numberOfSessions %></div>
 <% } %>
 <div class="tools">
-<a href="/editgame/<%= game._id %>">Edit</a>
+<a class="content-link" href="/editgame/<%= game._id %>">Edit</a>
 <% if (user.name === "martin") { %>
-<a href="/deletegame/<%= game._id %>">Delete</a>
+<a class="content-link" href="/deletegame/<%= game._id %>">Delete</a>
 <% } %>
-<div>
-
+    <div class="disqus">
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -36,5 +35,5 @@
     </script>
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
+    </div>
 <% include foot %>

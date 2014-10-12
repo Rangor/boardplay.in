@@ -17,11 +17,11 @@
 <% } %>
 <br>
 <% if (userEdit.bggLink) { %>
-<a href="<%= userEdit.bggLink %>">Boardgame Geek Profile</a>
+<a  class="content-link" href="<%= userEdit.bggLink %>">Boardgame Geek Profile</a>
 <% } %>
 <br>
 <% if (userEdit.bgLink) { %>
-<a href="<%= userEdit.bgLink %>">Boardgaming Profile</a>
+<a class="content-link" href="<%= userEdit.bgLink %>">Boardgaming Profile</a>
 <% } %>
 
 <% if (locals.gamesList) { %>
@@ -37,14 +37,14 @@
 <ul class="profile">
 <% for(var i=0; i < locals.sessions.length && i < 4; i++){ %>
 <li>
-<a href="/session/<%= locals.sessions[i]._id %>"><%= locals.sessions[i].gameName %></a>
+<a class="content-link" href="/session/<%= locals.sessions[i]._id %>"><%= locals.sessions[i].gameName %></a>
 on <%= locals.sessions[i].date.getDate() %>/<%= locals.sessions[i].date.getMonth()+1 %>/<%= locals.sessions[i].date.getFullYear() %> - <%= locals.sessions[i].summary %>
 </li>
 <% } %>
 </ul>
 <% } %>
 <% if (user.name === userEdit.name) { %>
-<a href="/edituser/<%= userEdit._id %>">Edit</a>
-<a href="/deleteuser/<%= user._id %>">Delete</a>
+<a class="content-link" href="/edituser/<%= userEdit._id %>">Edit</a>
+<a class="content-link" href="/deleteuser/<%= user._id %>">Delete</a>
 <% } %>
 <% include foot %>
