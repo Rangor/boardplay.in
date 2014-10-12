@@ -3,7 +3,7 @@
 <h2><%= game.name %></h2>
 <a class="newsession" href="/logsession/<%= game._id %>">Log a session</a>
 <% if (game.bggLink && game.bggLink != "undefined") { %>
-<a href="<%= game.bggLink %>"><h4>more info</h4></a><br>
+<a class="content-like" href="<%= game.bggLink %>"><h4>more info</h4></a><br>
 <% } %>
 
 <% if (game.description) { %>
