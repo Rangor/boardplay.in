@@ -21,7 +21,6 @@ h3{
 }
 
 .content{
-	padding-top: 30px;
 	text-align: center;
 	margin: auto;
 }
@@ -48,7 +47,7 @@ h3{
 .main_menu{
 	font-size: 22px;
 	display: inline-block;
-	padding: 10px 20px;
+	padding: 0px 15px;
 }
 
 .changelog{
@@ -58,10 +57,24 @@ h3{
 ul.latest-sessions{
 	margin-left: auto;
 	margin-right: auto;
+	padding-left: 0px;
+	padding-right: 0px;
+	max-width: 1200px;
 	text-align: center;
 	max-height: 195px;
 	overflow: hidden;
 
+}
+
+ul.all-sessions{
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 0px;
+	padding-right: 0px;
+	max-width: 1200px;
+	text-align: center;
+	max-height: 195px;
+	overflow: hidden;
 }
 
 li.session-item{
@@ -135,6 +148,9 @@ ul.latest-gamelist{
 	text-align: center;
 	max-height: 125px;
 	overflow: hidden;
+	padding-left: 0px;
+	padding-right: 0px;
+	max-width: 1200px;
 }
 
 li.gamelist-item{

@@ -1,5 +1,5 @@
 <% if (sessions) { %>
-  <ul class="list-group">
+  <ul class="all-sessions">
     <% sessions.forEach(function(session){ %>
       <li class="session-item">
       <a class="session-link" href="/user/<%= session.userName %>"><img width="40" src="http://www.gravatar.com/avatar/<%= session.gravatarHash %>" /></a>
