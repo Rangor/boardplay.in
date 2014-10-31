@@ -1,4 +1,4 @@
-//Main file for dependencies and basic node stuff
+
 var express = require('express');
 var hash = require('./pass').hash;
 var bodyParser = require('body-parser');
@@ -62,13 +62,8 @@ app.use(function(req, res, next){
   next();
 });
 
-if (!module.parent) {
-  var port = Number(process.env.PORT || 5000);
-  app.listen(port, function() {
-    console.log("Listening on " + port);
-  });
-}
 // Authenticate using our plain-object database of doom!
+
 function authenticate(name, pass, fn) {
   var query = User.findOne({ 'name': name });
   query.select('name password salt gravatarHash apiKey');//Todo something went wrong on the server here, salt was null or something
@@ -118,6 +113,21 @@ function updateSessionsWithGravatarHash(userName, newGravatarHash){
   });
 }
 
+app.get('/', restrict, function(req, res){
+  getLatestGamesAndSessions(function (games, sessions) {
+    res.locals.sessions = sessions;
+    res.locals.user = req.session.user;
+    res.locals.games = games;
+    res.render('main');
+  })
+});
+
+app.get('/about', restrict, function(req, res){
+  res.locals.user = req.session.user;
+    res.render('about');
+});
+
+//Helper methods
 function getAllGames(fn){
   var query = Game.find();
   query.sort("name");
@@ -144,49 +154,71 @@ function getLatestGamesAndSessions(fn){
     });
   });
 }
-//Basic urls
-app.get('/', restrict, function(req, res){
-  getLatestGamesAndSessions(function (games, sessions) {
-    res.locals.sessions = sessions;
+
+// Urls
+// Game 
+app.get('/games', restrict,function(req, res){
+  query = Game.find();
+  query.sort("name");
+  query.exec(function (err, data) {
+    if (err) return console.error(err);
+    res.locals.games = data;
     res.locals.user = req.session.user;
-    res.locals.games = games;
-    res.render('main');
-  })
-});
-
-app.get('/about', restrict, function(req, res){
-  res.locals.user = req.session.user;
-    res.render('about');
-});
-
-//////////////////////////////
-// Login
-//////////////////////////////
-
-app.get('/logout', function(req, res){
-  req.session.destroy(function(){
-    res.redirect('/');
+    res.render('games');
   });
 });
 
-app.get('/login', function(req, res){
-  res.render('login');
+app.get('/newgame', restrict,function(req, res){
+  res.locals.user = req.session.user;
+  res.render('newgame');
 });
 
-app.post('/login', function(req, res){
-  authenticate(req.body.username, req.body.password, function(err, user){
-    if (user) {
-      req.session.regenerate(function(){
-        req.session.user = user;
+app.post('/newgame', restrict,function(req, res){
+  var game = new Game();
+  game.name = req.param("name");
+  game.bggLink = req.param("bggLink");
+  game.description = req.param("description");
+  game.save(function () {
+    res.locals.user = req.session.user;
+    res.redirect('games');
+  });
+});
+
+//User
+app.get('/users', restrict,function(req, res){
+  User.find(function (err, data) {
+    if (err) return console.error(err);
+    res.locals.users = data;
+    res.locals.user = req.session.user;
+    res.render('users');
+  });
+});
+
+app.get('/newuser', function(req, res){
+  res.locals.user = req.session.user;
+  res.render('newuser');
+});
+
+app.post('/newuser', function(req, res){
+  var user = new User();
+  user.name = req.param("name");
+  if(req.param("invitekey") != "thisismyinvitekey"){
+    res.locals.errormessage = "Wrong invite key";
+    res.render('newuser');
+  }else{
+    hash(req.param("password"), function(err, salt, hash){
+      if (err) throw err;
+      user.salt = salt;
+      user.password = hash;
+
+      user.save(function () {
         res.redirect('/');
       });
-    } else {
-      req.session.error = 'Authentication failed, please check your '
-      + ' username and password.';
-      res.redirect('/login');
-    }
-  });
+
+    });
+  }
 });
+
 //Session
 app.get('/sessions', restrict,function(req, res){
   var query = Session.find();
@@ -307,33 +339,48 @@ app.get('/deletesession/:id', restrict,function(req, res){
     res.redirect('/sessions');
   })
 });
-//Game
-app.get('/games', restrict,function(req, res){
-  query = Game.find();
-  query.sort("name");
-  query.exec(function (err, data) {
-    if (err) return console.error(err);
-    res.locals.games = data;
-    res.locals.user = req.session.user;
-    res.render('games');
-  });
+
+//////////////////////////////
+//Stats
+//////////////////////////////
+
+
+app.get('/stats', restrict, function(req,res){
+  res.render('stats');
 });
 
-app.get('/newgame', restrict,function(req, res){
+//////////////////////////////
+//Password
+//////////////////////////////
+
+app.get('/resetpassword', function(req, res){
   res.locals.user = req.session.user;
-  res.render('newgame');
+  res.render('resetpassword');
 });
 
-app.post('/newgame', restrict,function(req, res){
-  var game = new Game();
-  game.name = req.param("name");
-  game.bggLink = req.param("bggLink");
-  game.description = req.param("description");
-  game.save(function () {
-    res.locals.user = req.session.user;
-    res.redirect('games');
-  });
-});
+app.post('/resetpassword', function(req, res){
+        // console.log("resetting password");
+        // var secretKey = req.param("secretkey");
+        // console.log(req.param("userid"));
+        // if(secretKey != "oihfdsgpiougaddlkhjasd"){
+        //   res.redirect('/');
+        // }else{
+        //   var selectedId = req.param("userid");
+        //   var query = User.findOne({ '_id': selectedId });
+        //   query.select('password salt');
+        //   query.exec(function (err, user) {
+        //     hash(req.param("password"), function(err, salt, hash){
+        //       user.salt = salt;
+        //       user.password = hash;
+        //       user.save(function () {
+        //         console.log("Password was reset");
+        //         res.redirect('/login');
+        //       });
+
+        //     })
+        //   })
+        // }
+      });
 
 app.get('/game/:id', restrict,function(req, res){
 
@@ -387,40 +434,6 @@ app.post('/editgame', restrict,function(req, res){
       res.redirect(/game/+game._id);
     });
   }); 
-});
-//User
-app.get('/users', restrict,function(req, res){
-  User.find(function (err, data) {
-    if (err) return console.error(err);
-    res.locals.users = data;
-    res.locals.user = req.session.user;
-    res.render('users');
-  });
-});
-
-app.get('/newuser', function(req, res){
-  res.locals.user = req.session.user;
-  res.render('newuser');
-});
-
-app.post('/newuser', function(req, res){
-  var user = new User();
-  user.name = req.param("name");
-  if(req.param("invitekey") != "thisismyinvitekey"){
-    res.locals.errormessage = "Wrong invite key";
-    res.render('newuser');
-  }else{
-    hash(req.param("password"), function(err, salt, hash){
-      if (err) throw err;
-      user.salt = salt;
-      user.password = hash;
-
-      user.save(function () {
-        res.redirect('/');
-      });
-
-    });
-  }
 });
 
 app.get('/user/:name', restrict,function(req, res){
@@ -499,3 +512,79 @@ app.post('/edituser', restrict,function(req, res){
     });
   }); 
 });
+
+//////////////////////////////
+// Login
+//////////////////////////////
+
+app.get('/logout', function(req, res){
+  req.session.destroy(function(){
+    res.redirect('/');
+  });
+});
+
+app.get('/login', function(req, res){
+  res.render('login');
+});
+
+app.post('/login', function(req, res){
+  authenticate(req.body.username, req.body.password, function(err, user){
+    if (user) {
+      req.session.regenerate(function(){
+        req.session.user = user;
+        res.redirect('/');
+      });
+    } else {
+      req.session.error = 'Authentication failed, please check your '
+      + ' username and password.';
+      res.redirect('/login');
+    }
+  });
+});
+
+//////////////////////////////
+//API
+//////////////////////////////
+app.post('/api/apikey', function(req, res){
+  authenticate(req.body.username, req.body.password, function(err, user){
+    if(user){
+      hash("apikeyseed", function(err, salt, hash){         
+        user.apiKey = hash.substring(1,20);
+        user.save(function () {
+          var apiKeyDict = {};
+          apiKeyDict["apiKey"] = user.apiKey;
+          res.json(apiKeyDict);
+        })
+      })
+    }
+  });
+});
+
+app.get('/api/games/:apikey', apiRestrict, function(req, res){
+  Game.find(function(err, games){
+    res.setHeader('Content-Type', 'application/json');
+    res.json(games);
+  })
+});
+
+app.get('/api/sessions/:apikey', apiRestrict, function(req, res){
+  Session.find(function(err, sessions){
+    res.setHeader('Content-Type', 'application/json');
+    res.json(sessions);
+  })
+});
+
+app.get('/api/usersessions/:apikey', apiRestrict, function(req, res){
+  Session.find(function(err, sessions){
+    res.setHeader('Content-Type', 'application/json');
+    res.json(sessions);
+  })
+});
+
+
+if (!module.parent) {
+  var port = Number(process.env.PORT || 5000);
+  app.listen(port, function() {
+    console.log("Listening on " + port);
+  });
+}
