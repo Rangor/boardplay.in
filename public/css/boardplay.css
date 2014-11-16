@@ -4,6 +4,8 @@ body, html{
 	font-family: 'Open Sans', sans-serif;
 	-webkit-font-smoothing:subpixel-antialiased;
 	font-weight:normal;
+	background: #131F2C;
+	color: #8DACA7;
 }
 
 img.profile{
@@ -40,7 +42,7 @@ h3{
 
 .menu_container{
 	width: 100%;
-	color: black;
+	color: #8DACA7;
 	text-align: center;
 }
 
@@ -59,9 +61,9 @@ ul.latest-sessions{
 	margin-right: auto;
 	padding-left: 0px;
 	padding-right: 0px;
-	max-width: 1200px;
+	max-width: 6000px;
 	text-align: center;
-	max-height: 195px;
+	max-height: 2200px;
 	overflow: hidden;
 
 }
@@ -78,26 +80,35 @@ ul.all-sessions{
 
 li.session-item{
 	list-style-type: none;
-	width: 350px;
-	height: 85px;
+	width: 500px;
+	height: 95px;
 	border-radius: 5px;
-	background: #99C2FF;
-	color: black;
-	padding-top: 10px;
+	background: #6C8E93;
+	color: #CFD9CC;
+	padding-top: 4px;
+	padding-bottom: 3px;
+	margin-right: 5px;
 	display: inline-block;
 	overflow: hidden;
+	text-overflow: ellipsis;
 	vertical-align: top;
-	margin-bottom: 5px;
+	margin-bottom: 7px;
 }
 
 li.session-item p {
 	text-align: left;
 	margin-top: 0px;
+	font-size: 14px;
+	margin-bottom: 3000px;
+	padding-bottom: 300px;
+	margin-right: 10px;
 }
 
 li.session-item img
 {
 	float:left;
+	padding-bottom: 30px;
+	padding-top: 0px;
 	padding-right: 8px;
 	padding-left: 8px;
 }
@@ -115,7 +126,7 @@ li.hasplayed-item{
     padding-left:0px;
 	width: 200px;
 	height: 50px;
-	background: #99C2FF;
+	background: #6C8E93;
 	margin-bottom: 5px;
 	padding-top: 10px;
 	border-radius: 5px;
@@ -160,7 +171,7 @@ li.gamelist-item{
 	height: 50px;
 	color: white;
 	margin-bottom: 5px;
-	background: #99C2FF;
+	background: #6C8E93;
 	padding-top: 10px;
 	border-radius: 5px;
 	display: inline-block;
@@ -170,13 +181,13 @@ li.gamelist-item{
 }
 
 a.session-link{
-	color:black;
+	color:#F3EED3;
 	text-decoration: none;
 	font-weight: bold;
 }
 
 a.game-link {
-	color:black;
+	color:#F3EED3;
 	text-decoration: none;
 	font-weight: bold;
 }
@@ -191,25 +202,26 @@ li.gamelist-item p{
 }
 
 a.menu{
-	color:black;
+	color:#F3EED3;
 }
 
 a.newsession{
 	font-weight: normal;
-	background-color: #18ab29;
-	border : 1px solid #18ab29;
+	color:#6C8E93;
+	background-color: #F3EED3;
+	border : 1px solid #F3EED3;
 	border-radius: 5px;
 	padding: 2px 5px;
 }
 
 a {
-	color:black;
+	color:#F3EED3;
 	text-decoration: none;
 	font-weight: bold;
 }
 
 a.content-link {
-	color:black;
+	color:#F3EED3;
 	text-decoration: none;
 	font-weight: bold;
 }

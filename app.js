@@ -135,9 +135,9 @@ function getLatestGamesAndSessions(fn){
   query.exec(function (err, games) {
     if (err) return console.error(err);
     var query = Session.find();
-    query.limit(25);
+    query.limit(12);
     query.sort("-date");
-    query.select('userName gameName date summary gravatarHash');
+    query.select('userName summary gameName date summary gravatarHash');
     query.exec(function (err, sessions) {
       if (err) return console.error(err);
       return fn(games, sessions);
