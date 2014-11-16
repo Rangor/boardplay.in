@@ -2,10 +2,13 @@
   <ul class="all-sessions">
     <% sessions.forEach(function(session){ %>
       <li class="session-item">
-      <a class="session-link" href="/user/<%= session.userName %>"><img width="40" src="http://www.gravatar.com/avatar/<%= session.gravatarHash %>" /></a>
+      <a class="session-link" href="/user/<%= session.userName %>"><img width="60" src="http://www.gravatar.com/avatar/<%= session.gravatarHash %>" /></a>
       <p>
       <a class="session-link" href="/user/<%= session.userName %>"><%= session.userName %></a> played <a class="session-link" href="/session/<%= session._id %>"><%= session.gameName %></a>
        on <%= session.date.getDate() %>/<%= session.date.getMonth()+1 %>/<%= session.date.getFullYear() %>
+       <% if (session.summary){%>
+       <br><%= session.summary %>
+       <% } %>
        </p>
       </li>
     <% }) %>
